@@ -1,6 +1,6 @@
 ' Small Quest (Pilot)
 ' Last update 2015-05-07
-' Program ID KFJ750
+' Program ID TRR010
 
 'Configurações da janela do jogo.
 GraphicsWindow.Show()
