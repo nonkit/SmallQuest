@@ -2,13 +2,25 @@
 ' Last update 2015-05-07
 ' Program ID KFJ750
 
+'Configurações da janela do jogo.
 GraphicsWindow.Show()
-GraphicsWindow.Title = "janela de escolha do poersonagem"
+GraphicsWindow.Title = "Character selection"
 GraphicsWindow.Height = "550" 
 GraphicsWindow.Width = "800"
 
-GraphicsWindow.BackgroundColor= "Black"
+'Dsigner da janala do jogo.
+GraphicsWindow.BackgroundColor= "blue"
 GraphicsWindow.BrushColor= GraphicsWindow.GetColorFromRGB (211, 211, 211)
 GraphicsWindow.FillRectangle (10, 10, 780, 470)
 GraphicsWindow.BrushColor= GraphicsWindow.GetColorFromRGB (211, 211, 211)
 GraphicsWindow.FillRectangle (10, 490, 780, 50)
+GraphicsWindow.BrushColor= GraphicsWindow.GetColorFromRGB (0, 0, 0)
+GraphicsWindow.FillRectangle (13, 493, 774, 44)
+GraphicsWindow.BrushColor= GraphicsWindow.GetColorFromRGB (0, 0, 0)
+GraphicsWindow.FillRectangle (15, 15, 185, 460)
+GraphicsWindow.BrushColor= GraphicsWindow.GetColorFromRGB (0, 0, 0)
+GraphicsWindow.FillRectangle (210, 15, 185, 460)
+GraphicsWindow.BrushColor= GraphicsWindow.GetColorFromRGB (0, 0, 0)
+GraphicsWindow.FillRectangle (405, 15, 185, 460)
+GraphicsWindow.BrushColor= GraphicsWindow.GetColorFromRGB (0, 0, 0)
+GraphicsWindow.FillRectangle (600, 15, 185, 460)
