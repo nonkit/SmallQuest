@@ -1,2 +1,14 @@
-' Small Quest (Template)
-' Last update 2015-05-05
+' Small Quest (Pilot)
+' Last update 2015-05-07
+' Program ID KFJ750
+
+GraphicsWindow.Show()
+GraphicsWindow.Title = "janela de escolha do poersonagem"
+GraphicsWindow.Height = "550" 
+GraphicsWindow.Width = "800"
+
+GraphicsWindow.BackgroundColor= "Black"
+GraphicsWindow.BrushColor= GraphicsWindow.GetColorFromRGB (211, 211, 211)
+GraphicsWindow.FillRectangle (10, 10, 780, 470)
+GraphicsWindow.BrushColor= GraphicsWindow.GetColorFromRGB (211, 211, 211)
+GraphicsWindow.FillRectangle (10, 490, 780, 50)
