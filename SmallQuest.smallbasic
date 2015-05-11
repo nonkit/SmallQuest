@@ -1,6 +1,6 @@
 ' Small Quest (Pilot)
 ' Last update 2015-05-07
-' Program ID TRR010
+' Program ID MGW973
 
 'Configurações da janela do jogo.
 GraphicsWindow.Show()
@@ -9,10 +9,10 @@ GraphicsWindow.Height = "550"
 GraphicsWindow.Width = "800"
 
 'Dsigner da janala do jogo.
-GraphicsWindow.BackgroundColor= "blue"
-GraphicsWindow.BrushColor= GraphicsWindow.GetColorFromRGB (211, 211, 211)
+GraphicsWindow.BackgroundColor= "DodgerBlue"
+GraphicsWindow.BrushColor= GraphicsWindow.GetColorFromRGB (255, 255, 255)
 GraphicsWindow.FillRectangle (10, 10, 780, 470)
-GraphicsWindow.BrushColor= GraphicsWindow.GetColorFromRGB (211, 211, 211)
+GraphicsWindow.BrushColor= GraphicsWindow.GetColorFromRGB (255, 255, 255)
 GraphicsWindow.FillRectangle (10, 490, 780, 50)
 GraphicsWindow.BrushColor= GraphicsWindow.GetColorFromRGB (0, 0, 0)
 GraphicsWindow.FillRectangle (13, 493, 774, 44)
