@@ -1,12 +1,17 @@
-' Program ID MGW973
+' Small Quest (Pilot)
+' Copyright © 2015 Filipe Cardoso Martins and Nonki Takahashi.  The MIT License.
+' Program ID MGW973-0
+' Last update 2015-05-12
 
-'Configurações da janela do jogo.
+'Configurações da janela do jogo. | The game window settings.
+lang = "en-US"
+InitLang()
 GraphicsWindow.Show()
-GraphicsWindow.Title = "Character selection"
+GraphicsWindow.Title = txt["title"]
 GraphicsWindow.Height = "550" 
 GraphicsWindow.Width = "800"
 
-'Dsigner da janala do jogo.
+'Designer da janela do jogo. | Designer of the game window.
 GraphicsWindow.BackgroundColor= "DodgerBlue"
 GraphicsWindow.BrushColor= GraphicsWindow.GetColorFromRGB (255, 255, 255)
 GraphicsWindow.FillRectangle (10, 10, 780, 470)
@@ -22,3 +27,83 @@ GraphicsWindow.BrushColor= GraphicsWindow.GetColorFromRGB (0, 0, 0)
 GraphicsWindow.FillRectangle (405, 15, 185, 460)
 GraphicsWindow.BrushColor= GraphicsWindow.GetColorFromRGB (0, 0, 0)
 GraphicsWindow.FillRectangle (600, 15, 185, 460)
+
+' Mostrar caracteres | Show characters
+GraphicsWindow.FontName = "Trebuchet MS"
+GraphicsWindow.FontSize = 30
+dark = 30
+y1 = 15
+y2 = y1 + 460
+For i = 1 To 4
+  x1[i] = 30 + (i - 1) * 195
+  x2[i] = x1[i] + 185
+  GraphicsWindow.BrushColor = "White"
+  name[i] = Shapes.AddText(txt["name" + i])
+  Shapes.Move(name[i], 30 + (i - 1) * 195, 496)
+  GraphicsWindow.BrushColor = "Gray"
+  face[i] = Shapes.AddRectangle(155, 200)
+  Shapes.Move(face[i], 30 + (i - 1) * 195, 150)
+  If i = 1 Then
+    hover[i] = "True"
+  Else
+    hover[i] = "False"
+    Shapes.SetOpacity(name[i], dark)
+    Shapes.SetOpacity(face[i], dark)
+  EndIf
+EndFor
+mouseMove = "False"
+GraphicsWindow.MouseMove = OnMouseMove
+selecting = "True"
+While selecting
+  If mouseMove Then
+    mx = GraphicsWindow.MouseX
+    my = GraphicsWindow.MouseY
+    For i = 1 To 4
+      If x1[i] <= mx And mx <= x2[i] And y1 <= my And my <= y2 Then
+        If hover[i] Then
+        Else
+          hover[i] = "True"
+          Shapes.SetOpacity(name[i], 100)
+          Shapes.SetOpacity(face[i], 100)
+        EndIf
+      Else
+        If hover[i] Then
+          hover[i] = "False"
+          Shapes.SetOpacity(name[i], dark)
+          Shapes.SetOpacity(face[i], dark)
+        EndIf
+      EndIf
+    EndFor
+    mouseMove = "False"
+  Else
+    Program.Delay(200)
+  EndIf
+EndWhile
+
+Sub OnMouseMove
+  mouseMove = "True"
+EndSub
+
+Sub InitLang
+  ' Inicializar Idioma do Texto - Estes texto será lido a partir do arquivo .dat no futuro.
+  ' Initialize Language Text - These text will be read from .dat file in the future.
+  If lang = "pt-BR" Then
+    txt["title"] = "seleção de personagens"
+    txt["name1"] = "Diggory"
+    txt["name2"] = "Johnny"
+    txt["name3"] = "Lya"
+    txt["name4"] = "Hana"
+  ElseIf lang = "en-US" Then
+    txt["title"] = "Character selection"
+    txt["name1"] = "Diggory"
+    txt["name2"] = "Johnny"
+    txt["name3"] = "Lya"
+    txt["name4"] = "Hana"
+  ElseIf lang = "ja-JP" Then
+    txt["title"] = "キャラクターをえらぶ"
+    txt["name1"] = "ディゴリー"
+    txt["name2"] = "ジョニー"
+    txt["name3"] = "ライア"
+    txt["name4"] = "ハナ"
+  EndIf
+EndSub
