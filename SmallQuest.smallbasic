@@ -1,9 +1,12 @@
 ' Small Quest (Pilot)
 ' Last update 2015-05-07
-' Program ID KFJ750
+' Program ID KFJ750-0
+' Revision 0
 
+lang = "pt-BR"
+InitLang()
 GraphicsWindow.Show()
-GraphicsWindow.Title = "janela de escolha do poersonagem"
+GraphicsWindow.Title = txt["title"]
 GraphicsWindow.Height = "550" 
 GraphicsWindow.Width = "800"
 
@@ -12,3 +15,14 @@ GraphicsWindow.BrushColor= GraphicsWindow.GetColorFromRGB (211, 211, 211)
 GraphicsWindow.FillRectangle (10, 10, 780, 470)
 GraphicsWindow.BrushColor= GraphicsWindow.GetColorFromRGB (211, 211, 211)
 GraphicsWindow.FillRectangle (10, 490, 780, 50)
+
+Sub InitLang
+  ' Initialize Language Text - These text will be read from .dat file in the future.
+  If lang = "pt-BR" Then
+    txt["title"] = "janela de escolha do personagem"
+  ElseIf lang = "en-US" Then
+    txt["title"] = "Window to Choose the Character"
+  ElseIf lang = "ja-JP" Then
+    txt["title"] = "キャラクターをえらぶウィンドウ"
+  EndIf
+EndSub
