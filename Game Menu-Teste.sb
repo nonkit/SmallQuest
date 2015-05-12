@@ -1,0 +1,36 @@
+'Game Menu 0.1
+'Small Quest (Teste)
+'Last update 2015-05-11
+'Program ID BSK269
+
+'Configurações da janela do jogo.
+GraphicsWindow.Show()
+GraphicsWindow.Title = "Game Menu 0.1"
+GraphicsWindow.Height = "550" 
+GraphicsWindow.Width = "800"
+
+'Dsigner da janala do jogo.
+GraphicsWindow.BackgroundColor= "DodgerBlue"
+GraphicsWindow.BrushColor= GraphicsWindow.GetColorFromRGB (255, 255, 255)
+GraphicsWindow.FillRectangle (10, 10, 780, 530)
+GraphicsWindow.BrushColor= GraphicsWindow.GetColorFromRGB (0, 0, 0)
+GraphicsWindow.FillRectangle (15, 15, 770, 520)
+
+'Configurações do game menu.
+GraphicsWindow.BrushColor = "DeepSkyBlue"
+GraphicsWindow.FontSize = "40"
+nameGame = Shapes.AddText("Small Quest")
+Shapes.Move(nameGame, 280, 50)
+GraphicsWindow.FontSize = "20"
+menuName = Shapes.AddText("GAME MENU")
+Shapes.Move(menuName, 340, 110)
+
+GraphicsWindow.BrushColor = "White"
+resume = Shapes.AddText("RESUME")
+Shapes.Move(resume, 362, 180)
+startNewGame = Shapes.AddText("START NEW GAME")
+Shapes.Move(startNewGame, 310, 215)
+language = Shapes.AddText("LANGUAGE")
+Shapes.Move(language, 346, 250)
+exit = Shapes.AddText("EXIT")
+Shapes.Move(exit, 380, 285)
