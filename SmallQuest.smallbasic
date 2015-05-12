@@ -1,6 +1,7 @@
 ' Small Quest (Pilot)
 ' Copyright © 2015 Filipe Cardoso Martins and Nonki Takahashi.  The MIT License.
-' Program ID MGW973-0
+' Program ID MGW973-1
+' Version 0.3
 ' Last update 2015-05-12
 
 'Configurações da janela do jogo. | The game window settings.
@@ -41,7 +42,8 @@ For i = 1 To 4
   name[i] = Shapes.AddText(txt["name" + i])
   Shapes.Move(name[i], 30 + (i - 1) * 195, 496)
   GraphicsWindow.BrushColor = "Gray"
-  face[i] = Shapes.AddRectangle(155, 200)
+  path = Program.Directory + "\image\" + fname[i] + ".png"
+  face[i] = Shapes.AddImage(path)
   Shapes.Move(face[i], 30 + (i - 1) * 195, 150)
   If i = 1 Then
     hover[i] = "True"
@@ -87,6 +89,10 @@ EndSub
 Sub InitLang
   ' Inicializar Idioma do Texto - Estes texto será lido a partir do arquivo .dat no futuro.
   ' Initialize Language Text - These text will be read from .dat file in the future.
+  fname[1] = "Diggory"
+  fname[2] = "Johnny"
+  fname[3] = "Lya"
+  fname[4] = "Hana"
   If lang = "pt-BR" Then
     txt["title"] = "seleção de personagens"
     txt["name1"] = "Diggory"
