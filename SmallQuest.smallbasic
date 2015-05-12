@@ -1,28 +1,24 @@
-' Small Quest (Pilot)
-' Last update 2015-05-07
-' Program ID KFJ750-0
-' Revision 0
+' Program ID MGW973
 
-lang = "pt-BR"
-InitLang()
+'Configurações da janela do jogo.
 GraphicsWindow.Show()
-GraphicsWindow.Title = txt["title"]
+GraphicsWindow.Title = "Character selection"
 GraphicsWindow.Height = "550" 
 GraphicsWindow.Width = "800"
 
-GraphicsWindow.BackgroundColor= "Black"
-GraphicsWindow.BrushColor= GraphicsWindow.GetColorFromRGB (211, 211, 211)
+'Dsigner da janala do jogo.
+GraphicsWindow.BackgroundColor= "DodgerBlue"
+GraphicsWindow.BrushColor= GraphicsWindow.GetColorFromRGB (255, 255, 255)
 GraphicsWindow.FillRectangle (10, 10, 780, 470)
-GraphicsWindow.BrushColor= GraphicsWindow.GetColorFromRGB (211, 211, 211)
+GraphicsWindow.BrushColor= GraphicsWindow.GetColorFromRGB (255, 255, 255)
 GraphicsWindow.FillRectangle (10, 490, 780, 50)
-
-Sub InitLang
-  ' Initialize Language Text - These text will be read from .dat file in the future.
-  If lang = "pt-BR" Then
-    txt["title"] = "janela de escolha do personagem"
-  ElseIf lang = "en-US" Then
-    txt["title"] = "Window to Choose the Character"
-  ElseIf lang = "ja-JP" Then
-    txt["title"] = "キャラクターをえらぶウィンドウ"
-  EndIf
-EndSub
+GraphicsWindow.BrushColor= GraphicsWindow.GetColorFromRGB (0, 0, 0)
+GraphicsWindow.FillRectangle (13, 493, 774, 44)
+GraphicsWindow.BrushColor= GraphicsWindow.GetColorFromRGB (0, 0, 0)
+GraphicsWindow.FillRectangle (15, 15, 185, 460)
+GraphicsWindow.BrushColor= GraphicsWindow.GetColorFromRGB (0, 0, 0)
+GraphicsWindow.FillRectangle (210, 15, 185, 460)
+GraphicsWindow.BrushColor= GraphicsWindow.GetColorFromRGB (0, 0, 0)
+GraphicsWindow.FillRectangle (405, 15, 185, 460)
+GraphicsWindow.BrushColor= GraphicsWindow.GetColorFromRGB (0, 0, 0)
+GraphicsWindow.FillRectangle (600, 15, 185, 460)
