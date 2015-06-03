@@ -1,12 +1,12 @@
-'Game Menu 0.3
+'Game Menu 0.4
 'Small Quest (Teste)
 'Copyright © 2015 Filipe Cardoso Martins and Nonki Takahashi.  The MIT License.
 'Last update 2015-06-04
-'Program ID BSK269-0
+'Program ID BSK269-1
 
 'Configurações da janela do jogo. / The game window settings.
 GraphicsWindow.Show()
-GraphicsWindow.Title = "Game Menu 0.3"
+GraphicsWindow.Title = "Game Menu 0.4"
 GraphicsWindow.Height = "550" 
 GraphicsWindow.Width = "800"
 
@@ -35,9 +35,8 @@ Shapes.Move(menuName, 337, 110)
 
 GraphicsWindow.BrushColor = "White"
 GraphicsWindow.PenColor = "Gray"
-menuCaption = "1=RESUME;2=NEW GAME;3=LANGUAGE;4=HELP;5=EXIT;"
-menuX = "1=357;2=343;3=344;4=374;5=376;"
-nMenu = Array.GetItemCount(menuCaption)
+lang = "en-US"
+GetTextFromDAT()
 dark = 30
 y0 = 180
 dy = 35
@@ -75,6 +74,32 @@ While inGame
   EndIf
 EndWhile
 Program.End()
+
+Sub GetTextFromDAT
+  ln = 1
+  dat[ln] = File.ReadLine(Program.Directory + "/" + lang + ".dat", ln)
+  While dat[ln] <> ""
+    ln = ln + 1
+    dat[ln] = File.ReadLine(Program.Directory + "/" + lang + ".dat", ln)
+  EndWhile
+  For i = 1 To ln
+    If Text.StartsWith(dat[i], "menu1") Then
+      menuCaption = dat[i]
+      nMenu = Array.GetItemCount(menuCaption)
+      For j = 1 To nMenu
+        menuCaption[j] = menuCaption["menu" + j]
+        menuCaption["menu" + j] = ""
+      EndFor
+    EndIf
+    If Text.StartsWith(dat[i], "menuX1") Then
+      menuX= dat[i]
+      For j = 1 To nMenu
+        menuX[j] = menuX["menuX" + j]
+        menuX["menuX" + j] = ""
+      EndFor
+    EndIf
+  EndFor
+EndSub
 
 Sub OnMouseMove
   mouseMove = "True"
