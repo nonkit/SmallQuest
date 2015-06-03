@@ -1,23 +1,29 @@
-'Game Menu 0.2
+'Game Menu 0.3
 'Small Quest (Teste)
 'Copyright © 2015 Filipe Cardoso Martins and Nonki Takahashi.  The MIT License.
-'Last update 2015-06-03
+'Last update 2015-06-04
 'Program ID BSK269-0
 
-'Configurações da janela do jogo. | The game window settings.
+'Configurações da janela do jogo. / The game window settings.
 GraphicsWindow.Show()
-GraphicsWindow.Title = "Game Menu 0.2"
+GraphicsWindow.Title = "Game Menu 0.3"
 GraphicsWindow.Height = "550" 
 GraphicsWindow.Width = "800"
 
-'Designer da janela do jogo. | Designer of the game window.
+'Designer da janela do jogo. / Designer of the game window.
 GraphicsWindow.BackgroundColor= "DodgerBlue"
 GraphicsWindow.BrushColor= GraphicsWindow.GetColorFromRGB (255, 255, 255)
 GraphicsWindow.FillRectangle (10, 10, 780, 530)
 GraphicsWindow.BrushColor= GraphicsWindow.GetColorFromRGB (0, 0, 0)
 GraphicsWindow.FillRectangle (15, 15, 770, 520)
 
-'Configurações do game menu. | Game settings menu.
+'Foto de Fundo. / Photo Fund.
+imagem = ImageList.LoadImage(Program.Directory + "/image/FundoTelaCarregamento.png")
+GraphicsWindow.DrawImage(imagem, 15, 15)
+GraphicsWindow.BrushColor = "#CC000000"
+GraphicsWindow.FillRectangle(300, 160, 200, 260)
+
+'Configurações do game menu. / Game settings menu.
 GraphicsWindow.BrushColor = "DarkOrange"
 GraphicsWindow.FontSize = "40"
 nameGame = Shapes.AddText("Small Quest")
