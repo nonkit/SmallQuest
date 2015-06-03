@@ -1,79 +1,36 @@
-'Game Menu 0.2
+'Game Menu 0.1
 'Small Quest (Teste)
-'Copyright © 2015 Filipe Cardoso Martins and Nonki Takahashi.  The MIT License.
-'Last update 2015-06-03
-'Program ID BSK269-0
+'Last update 2015-05-11
+'Program ID BSK269
 
-'Configurações da janela do jogo. | The game window settings.
+'Configurações da janela do jogo.
 GraphicsWindow.Show()
-GraphicsWindow.Title = "Game Menu 0.2"
+GraphicsWindow.Title = "Game Menu 0.1"
 GraphicsWindow.Height = "550" 
 GraphicsWindow.Width = "800"
 
-'Designer da janela do jogo. | Designer of the game window.
+'Dsigner da janala do jogo.
 GraphicsWindow.BackgroundColor= "DodgerBlue"
 GraphicsWindow.BrushColor= GraphicsWindow.GetColorFromRGB (255, 255, 255)
 GraphicsWindow.FillRectangle (10, 10, 780, 530)
 GraphicsWindow.BrushColor= GraphicsWindow.GetColorFromRGB (0, 0, 0)
 GraphicsWindow.FillRectangle (15, 15, 770, 520)
 
-'Configurações do game menu. | Game settings menu.
-GraphicsWindow.BrushColor = "DarkOrange"
+'Configurações do game menu.
+GraphicsWindow.BrushColor = "DeepSkyBlue"
 GraphicsWindow.FontSize = "40"
 nameGame = Shapes.AddText("Small Quest")
 Shapes.Move(nameGame, 280, 50)
-GraphicsWindow.BrushColor = "DeepSkyBlue"
 GraphicsWindow.FontSize = "20"
 menuName = Shapes.AddText("GAME MENU")
-Shapes.Move(menuName, 337, 110)
+Shapes.Move(menuName, 340, 110)
 
 GraphicsWindow.BrushColor = "White"
-GraphicsWindow.PenColor = "Gray"
-menuCaption = "1=RESUME;2=NEW GAME;3=LANGUAGE;4=HELP;5=EXIT;"
-menuX = "1=357;2=343;3=344;4=374;5=376;"
-nMenu = Array.GetItemCount(menuCaption)
-dark = 30
-y0 = 180
-dy = 35
-For i = 1 To nMenu
-  y = y0 + (i - 1) * dy
-  menu[i] = Shapes.AddText(menuCaption[i])
-  Shapes.Move(menu[i], menuX[i], y)
-  Shapes.SetOpacity(menu[i], dark)
-EndFor
-
-GraphicsWindow.MouseMove = OnMouseMove
-GraphicsWindow.MouseDown = OnMouseDown
-inGame = "True"
-While inGame
-  If mouseMove Then
-    my = GraphicsWindow.MouseY
-    selected = ""
-    For i = 1 To nMenu
-      y1 = y0 + (i - 1) * dy
-      y2 = y1 + dy
-      If y1 <= my And my < y2 Then
-        Shapes.SetOpacity(menu[i], 100)
-        selected = i
-      Else
-        Shapes.SetOpacity(menu[i], dark)
-      EndIf
-    EndFor
-    mouseMove = "False"
-  EndIf
-  If mouseDown Then
-    If menuCaption[selected] = "EXIT" Then
-      inGame = "False"
-    EndIf
-    mouseDown = "False"
-  EndIf
-EndWhile
-Program.End()
-
-Sub OnMouseMove
-  mouseMove = "True"
-EndSub
-
-Sub OnMouseDown
-  mouseDown = "True"
-EndSub
+resume = Shapes.AddText("RESUME")
+Shapes.Move(resume, 362, 180)
+startNewGame = Shapes.AddText("START NEW GAME")
+Shapes.Move(startNewGame, 310, 215)
+language = Shapes.AddText("LANGUAGE")
+Shapes.Move(language, 346, 250)
+exit = Shapes.AddText("EXIT")
+Shapes.Move(exit, 380, 285)
