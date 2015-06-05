@@ -2,9 +2,10 @@
 'Small Quest (Teste)
 'Copyright © 2015 Filipe Cardoso Martins and Nonki Takahashi.  The MIT License.
 'Last update 2015-06-04
-'Program ID BSK269-1
+'Program ID CBW762
 
 'Configurações da janela do jogo. / The game window settings.
+GraphicsWindow.Hide()
 GraphicsWindow.Show()
 GraphicsWindow.Title = "Game Menu 0.4"
 GraphicsWindow.Height = "550" 

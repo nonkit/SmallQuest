@@ -1,12 +1,13 @@
 ' Small Quest (Pilot)
 ' Copyright © 2015 Filipe Cardoso Martins and Nonki Takahashi.  The MIT License.
-' Program ID MGW973-1
+' Program ID HDL692
 ' Version 0.3
-' Last update 2015-05-12
+' Last update 2015-06-04
 
 'Configurações da janela do jogo. | The game window settings.
 lang = "en-US"
 InitLang()
+GraphicsWindow.Hide()
 GraphicsWindow.Show()
 GraphicsWindow.Title = txt["title"]
 GraphicsWindow.Height = "550" 
