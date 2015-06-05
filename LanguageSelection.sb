@@ -1,13 +1,13 @@
-'Language Selection 0.1
+'Language Selection 0.2
 'Small Quest (Teste)
 'Copyright © 2015 Filipe Cardoso Martins and Nonki Takahashi.  The MIT License.
-'Last update 2015-06-04
-'Program ID WBC381
+'Last update 2015-06-05
+'Program ID WBC381-0
 
 'Configurações da janela do jogo. / The game window settings.
 GraphicsWindow.Hide()
 GraphicsWindow.Show()
-GraphicsWindow.Title = "Language Selection 0.1"
+GraphicsWindow.Title = "Language Selection 0.2"
 GraphicsWindow.Height = "550" 
 GraphicsWindow.Width = "800"
 
@@ -37,17 +37,17 @@ Shapes.Move(menuName, 285, 110)
 'Texto Básico para teste / Basic text for testing.
 GraphicsWindow.BrushColor = "White"
 
-lang1 = Shapes.AddText("ENGLISH_en-US")
-Shapes.Move(lang1, 318, 180)
-estadosUnidos = ImageList.LoadImage(Program.Directory + "/EstadosUnidos.png")
-GraphicsWindow.DrawImage(estadosUnidos, 280, 180)
+lang1 = Shapes.AddText("ENGLISH")
+Shapes.Move(lang1, 360, 180)
+estadosUnidos = ImageList.LoadImage(Program.Directory + "/image/EstadosUnidos.png")
+GraphicsWindow.DrawImage(estadosUnidos, 320, 180 + 4)
 
-lang2 = Shapes.AddText("PORTUGÊS_pt-BR")
-Shapes.Move(lang2, 310, 215)
-brasil = ImageList.LoadImage(Program.Directory + "/Brasil.png")
-GraphicsWindow.DrawImage(brasil, 272, 215)
+lang2 = Shapes.AddText("PORTUGÊS")
+Shapes.Move(lang2, 360, 215)
+brasil = ImageList.LoadImage(Program.Directory + "/image/Brasil.png")
+GraphicsWindow.DrawImage(brasil, 320, 215 + 4)
 
-lang3 = Shapes.AddText("JAPANESE_ja-JP")
-Shapes.Move(lang3, 318, 250)
-japam = ImageList.LoadImage(Program.Directory + "/Japam.png")
-GraphicsWindow.DrawImage(japam, 280, 250)
+lang3 = Shapes.AddText("日本語")
+Shapes.Move(lang3, 360, 250)
+japam = ImageList.LoadImage(Program.Directory + "/image/Japam.png")
+GraphicsWindow.DrawImage(japam, 320, 250 + 4)
