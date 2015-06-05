@@ -1,2 +1,3 @@
-﻿menu1=つづき;menu2=新しいゲーム;menu3=言語;menu4=ヘルプ;menu5=終了;
+﻿gameMenu=ゲームメニュー;gameMenuX=342;
+menu1=つづき;menu2=新しいゲーム;menu3=言語;menu4=ヘルプ;menu5=終了;
 menuX1=375;menuX2=348;menuX3=380;menuX4=375;menuX5=380;

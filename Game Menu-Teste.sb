@@ -1,13 +1,13 @@
-'Game Menu 0.4
+'Game Menu 0.5
 'Small Quest (Teste)
 'Copyright © 2015 Filipe Cardoso Martins and Nonki Takahashi.  The MIT License.
-'Last update 2015-06-04
-'Program ID CBW762
+'Last update 2015-06-05
+'Program ID CBW762-0
 
 'Configurações da janela do jogo. / The game window settings.
 GraphicsWindow.Hide()
 GraphicsWindow.Show()
-GraphicsWindow.Title = "Game Menu 0.4"
+GraphicsWindow.Title = "Game Menu 0.5"
 GraphicsWindow.Height = "550" 
 GraphicsWindow.Width = "800"
 
@@ -24,81 +24,175 @@ GraphicsWindow.DrawImage(imagem, 15, 15)
 GraphicsWindow.BrushColor = "#CC000000"
 GraphicsWindow.FillRectangle(300, 160, 200, 260)
 
-'Configurações do game menu. / Game settings menu.
+'Título do jogo / Game title.
 GraphicsWindow.BrushColor = "DarkOrange"
 GraphicsWindow.FontSize = "40"
 nameGame = Shapes.AddText("Small Quest")
 Shapes.Move(nameGame, 280, 50)
-GraphicsWindow.BrushColor = "DeepSkyBlue"
-GraphicsWindow.FontSize = "20"
-menuName = Shapes.AddText("GAME MENU")
-Shapes.Move(menuName, 337, 110)
 
-GraphicsWindow.BrushColor = "White"
-GraphicsWindow.PenColor = "Gray"
-lang = "en-US"
+lang = "en-US"  'idioma padrão / default language
 GetTextFromDAT()
-dark = 30
-y0 = 180
-dy = 35
-For i = 1 To nMenu
-  y = y0 + (i - 1) * dy
-  menu[i] = Shapes.AddText(menuCaption[i])
-  Shapes.Move(menu[i], menuX[i], y)
-  Shapes.SetOpacity(menu[i], dark)
-EndFor
+
+'Configurações do game menu. / Game settings menu.
+GameMenu_Add()
 
 GraphicsWindow.MouseMove = OnMouseMove
 GraphicsWindow.MouseDown = OnMouseDown
-inGame = "True"
-While inGame
-  If mouseMove Then
-    my = GraphicsWindow.MouseY
-    selected = ""
-    For i = 1 To nMenu
-      y1 = y0 + (i - 1) * dy
-      y2 = y1 + dy
-      If y1 <= my And my < y2 Then
-        Shapes.SetOpacity(menu[i], 100)
-        selected = i
-      Else
-        Shapes.SetOpacity(menu[i], dark)
-      EndIf
-    EndFor
-    mouseMove = "False"
-  EndIf
-  If mouseDown Then
-    If menuCaption[selected] = "EXIT" Then
-      inGame = "False"
-    EndIf
-    mouseDown = "False"
-  EndIf
-EndWhile
+GameMenu_Select()
 Program.End()
+
+Sub GameMenu_Add
+  GraphicsWindow.BrushColor = "DeepSkyBlue"
+  GraphicsWindow.FontSize = "20"
+  menuName = Shapes.AddText(dat["gameMenu"])
+  Shapes.Move(menuName, dat["gameMenuX"], 110)
+  
+  GraphicsWindow.BrushColor = "White"
+  dark = 30
+  y0 = 180
+  dy = 35
+  For i = 1 To nMenu
+    y = y0 + (i - 1) * dy
+    menu[i] = Shapes.AddText(dat["menu" + i])
+    Shapes.Move(menu[i], dat["menuX" + i], y)
+    Shapes.SetOpacity(menu[i], dark)
+  EndFor
+EndSub
+
+Sub GameMenu_Select
+  inGame = "True"
+  While inGame
+    If mouseMove Then
+      my = GraphicsWindow.MouseY
+      selected = ""
+      For i = 1 To nMenu
+        y1 = y0 + (i - 1) * dy
+        y2 = y1 + dy
+        If y1 <= my And my < y2 Then
+          Shapes.SetOpacity(menu[i], 100)
+          selected = i
+        Else
+          Shapes.SetOpacity(menu[i], dark)
+        EndIf
+      EndFor
+      mouseMove = "False"
+    EndIf
+    If mouseDown Then
+      If selected = 1 Then      'CONTINUE
+      ElseIf selected = 2 Then  'NEW GAME
+      ElseIf selected = 3 Then  'LANGUAGE
+        GameMenu_Remove()
+        Language_Add()
+        mouseDown = "False"
+        Language_Select()
+        Language_Remove()
+        GameMenu_Add()
+      ElseIf selected = 4 Then  'HELP
+      ElseIf selected = 5 Then  'EXIT
+        inGame = "False"
+      EndIf
+      mouseDown = "False"
+    EndIf
+  EndWhile
+EndSub
+
+Sub GameMenu_Remove
+  Shapes.Remove(menuName)
+  For i = 1 To nMenu
+    Shapes.Remove(menu[i])
+  EndFor
+EndSub
 
 Sub GetTextFromDAT
   ln = 1
-  dat[ln] = File.ReadLine(Program.Directory + "/" + lang + ".dat", ln)
-  While dat[ln] <> ""
+  datLine = File.ReadLine(Program.Directory + "/" + lang + ".dat", ln)
+  While datLine <> ""
+    nItem = Array.GetItemCount(datLine)
+    index = Array.GetAllIndices(datLine)
+    For i = 1 To nItem
+      dat[index[i]] = datLine[index[i]]
+    EndFor
     ln = ln + 1
-    dat[ln] = File.ReadLine(Program.Directory + "/" + lang + ".dat", ln)
+    datLine = File.ReadLine(Program.Directory + "/" + lang + ".dat", ln)
   EndWhile
-  For i = 1 To ln
-    If Text.StartsWith(dat[i], "menu1") Then
-      menuCaption = dat[i]
-      nMenu = Array.GetItemCount(menuCaption)
-      For j = 1 To nMenu
-        menuCaption[j] = menuCaption["menu" + j]
-        menuCaption["menu" + j] = ""
-      EndFor
+  For i = 1 To 10 ' max menu
+    If Array.ContainsIndex(dat, "menu" + i) Then
+      nMenu = i
     EndIf
-    If Text.StartsWith(dat[i], "menuX1") Then
-      menuX= dat[i]
-      For j = 1 To nMenu
-        menuX[j] = menuX["menuX" + j]
-        menuX["menuX" + j] = ""
+  EndFor
+EndSub
+
+Sub Language_Add
+  GraphicsWindow.BrushColor = "DeepSkyBlue"
+  GraphicsWindow.FontSize = "20"
+  menuName = Shapes.AddText("LANGUAGE SELECTION")
+  Shapes.Move(menuName, 284, 110)
+
+  'Texto Básico para teste / Basic text for testing.
+  GraphicsWindow.BrushColor = "White"
+  
+  menu[1] = Shapes.AddText("ENGLISH")
+  Shapes.Move(menu[1], 360, 180)
+  flag[1] = Shapes.AddImage(Program.Directory + "/image/EstadosUnidos.png")
+  Shapes.Move(flag[1], 320, 180 + 4)
+  
+  menu[2] = Shapes.AddText("PORTUGÊS")
+  Shapes.Move(menu[2], 360, 215)
+  flag[2] = Shapes.AddImage(Program.Directory + "/image/Brasil.png")
+  Shapes.Move(flag[2], 320, 215 + 4)
+  
+  menu[3] = Shapes.AddText("日本語")
+  Shapes.Move(menu[3], 360, 250)
+  flag[3] = Shapes.AddImage(Program.Directory + "/image/Japam.png")
+  Shapes.Move(flag[3], 320, 250 + 4)
+
+  nLang = 3
+  For i = 1 To nLang
+    Shapes.SetOpacity(menu[i], dark)
+    Shapes.SetOpacity(flag[i], dark)
+  EndFor
+EndSub
+
+Sub Language_Select
+  inSelection = "True"
+  While inSelection
+    If mouseMove Then
+      my = GraphicsWindow.MouseY
+      selected = ""
+      For i = 1 To nMenu
+        y1 = y0 + (i - 1) * dy
+        y2 = y1 + dy
+        If y1 <= my And my < y2 Then
+          Shapes.SetOpacity(menu[i], 100)
+          Shapes.SetOpacity(flag[i], 100)
+          selected = i
+          If selected = 1 Then
+            lang = "en-US"
+          ElseIf selected = 2 Then
+            lang = "pt-BR"
+          ElseIf selected = 3 Then
+            lang = "ja-JP"
+          EndIf
+          GetTextFromDAT()
+        Else
+          Shapes.SetOpacity(menu[i], dark)
+          Shapes.SetOpacity(flag[i], dark)
+        EndIf
       EndFor
+      mouseMove = "False"
     EndIf
+    If mouseDown Then
+      inSelection = "False"
+      mouseDown = "False"
+    EndIf
+  EndWhile
+EndSub
+
+Sub Language_Remove
+  Shapes.Remove(menuName)
+  For i = 1 To nLang
+    Shapes.Remove(menu[i])
+    Shapes.Remove(flag[i])
   EndFor
 EndSub
 
