@@ -1,10 +1,11 @@
 ' Small Quest (Pilot)
 ' Copyright © 2015 Filipe Cardoso Martins and Nonki Takahashi.  The MIT License.
-' Program ID XVP451
+' Program ID BVF618
 ' Version 1.0
-' Last update 2015-06-03
+' Last update 2015-06-04
 
 'Configurações da janela do jogo. / The game window settings.
+GraphicsWindow.Hide()
 GraphicsWindow.Show()
 GraphicsWindow.Title = "Carregamento 1.0"
 GraphicsWindow.Height = "550" 
