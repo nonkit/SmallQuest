@@ -1,13 +1,13 @@
-'Game Menu 0.5
+'Game Menu 0.6
 'Small Quest (Teste)
 'Copyright © 2015 Filipe Cardoso Martins and Nonki Takahashi.  The MIT License.
 'Last update 2015-06-05
-'Program ID CBW762-0
+'Program ID CBW762-1
 
 'Configurações da janela do jogo. / The game window settings.
 GraphicsWindow.Hide()
 GraphicsWindow.Show()
-GraphicsWindow.Title = "Game Menu 0.5"
+GraphicsWindow.Title = "Game Menu 0.6"
 GraphicsWindow.Height = "550" 
 GraphicsWindow.Width = "800"
 
@@ -78,17 +78,17 @@ Sub GameMenu_Select
       mouseMove = "False"
     EndIf
     If mouseDown Then
-      If selected = 1 Then      'CONTINUE
-      ElseIf selected = 2 Then  'NEW GAME
-      ElseIf selected = 3 Then  'LANGUAGE
+      If selected = 1 Then      'CONTINUAR / CONTINUE
+      ElseIf selected = 2 Then  'NOVO JOGO / NEW GAME
+      ElseIf selected = 3 Then  'LINGUAGEM / LANGUAGE
         GameMenu_Remove()
         Language_Add()
         mouseDown = "False"
         Language_Select()
         Language_Remove()
         GameMenu_Add()
-      ElseIf selected = 4 Then  'HELP
-      ElseIf selected = 5 Then  'EXIT
+      ElseIf selected = 4 Then  'AJUDA / HELP
+      ElseIf selected = 5 Then  'SAIR / EXIT
         inGame = "False"
       EndIf
       mouseDown = "False"
@@ -104,6 +104,7 @@ Sub GameMenu_Remove
 EndSub
 
 Sub GetTextFromDAT
+  Stack.PushValue("local", i)
   ln = 1
   datLine = File.ReadLine(Program.Directory + "/" + lang + ".dat", ln)
   While datLine <> ""
@@ -120,6 +121,7 @@ Sub GetTextFromDAT
       nMenu = i
     EndIf
   EndFor
+  i = Stack.PopValue("local")
 EndSub
 
 Sub Language_Add
@@ -159,7 +161,7 @@ Sub Language_Select
     If mouseMove Then
       my = GraphicsWindow.MouseY
       selected = ""
-      For i = 1 To nMenu
+      For i = 1 To nLang
         y1 = y0 + (i - 1) * dy
         y2 = y1 + dy
         If y1 <= my And my < y2 Then
