@@ -1,8 +1,8 @@
-' Small Quest
-' Version 0.5a
-' Copyright © 2015 Filipe Cardoso Martins and Nonki Takahashi.  The MIT License.
-' Program ID HDL692-1
-' Last update 2015-06-25
+'Small Quest
+'Version 0.6a
+'Copyright © 2015 Filipe Cardoso Martins and Nonki Takahashi.  The MIT License.
+'Program ID HDL692-2
+'Last update 2015-06-25
 
 'Definições de idioma. / Language settings.
 lang = "en-US"
@@ -18,6 +18,12 @@ GraphicsWindow.Width = "800"
 Game_Frame()
 Game_Characters()
 Game_Actions()
+txt = "Hi!"
+i = 1
+big = "False"
+Game_ShowBalloon()
+Program.Delay(5000)
+Game_HideBalloon()
 Game_Start()
 
 Sub Game_Frame
@@ -40,7 +46,7 @@ Sub Game_Frame
 EndSub
 
 Sub Game_Characters
-  ' Mostrar caracteres. / Show characters.
+  'Mostrar caracteres. / Show characters.
   GraphicsWindow.FontName = "Trebuchet MS"
   GraphicsWindow.FontSize = 30
   dark = 30
@@ -129,13 +135,57 @@ Sub Game_Start
   EndWhile
 EndSub
 
+Sub Game_ShowBalloon
+  'Desenhe balão. / Draw balloon.
+  'param i - index 1..4 for each character
+  'param big - "True" for big balloon, "False" for small balloon
+  'param txt - balloon text
+  r = 20
+  height = 110
+  yb = y1 + 10
+  dx = (i - 1) * 195
+  GraphicsWindow.PenWidth = 0
+  GraphicsWindow.BrushColor = "#FFFFFF"
+  If big Then
+    width = 740
+    xb = 30
+  Else
+    width = 155
+    xb = 30 + dx
+  EndIf
+  balloon[1] = Shapes.AddRectangle(width, height - 2 * r)
+  Shapes.Move(balloon[1], xb, yb + r)
+  balloon[2] = Shapes.AddRectangle(width - 2 * r, height)
+  Shapes.Move(balloon[2], xb + r, yb)
+  For i = 3 To 6
+    balloon[i] = Shapes.AddEllipse(2 * r, 2 * r)
+  EndFor
+  Shapes.Move(balloon[3], xb, yb)
+  Shapes.Move(balloon[4], xb + width - 2 * r, yb)
+  Shapes.Move(balloon[5], xb, yb + height - 2 * r)
+  Shapes.Move(balloon[6], xb + width - 2 * r, yb + height - 2 * r)
+  root = Shapes.AddTriangle(50 + dx, yb + height, 65 + dx, yb + height, 65 + dx, yb + height + 20)
+  GraphicsWindow.BrushColor = "#000000"
+  GraphicsWindow.FontSize = 20
+  talk = Shapes.AddText(txt)
+  Shapes.Move(talk, xb + 10, yb + 10)
+EndSub
+
+Sub Game_HideBalloon
+  Shapes.Remove(root)
+  Shapes.Remove(talk)
+  For i = 1 To 6
+    Shapes.Remove(balloon[i])
+  EndFor
+EndSub
+
 Sub OnMouseMove
   mouseMove = "True"
 EndSub
 
 Sub GetTextFromDAT
-  ' Inicializar Idioma do Texto - Estes textos serão lidos do arquivo .dat.
-  ' Initialize Language Text - These text will be read from .dat file.
+  'Inicializar Idioma do Texto - Estes textos serão lidos do arquivo .dat.
+  'Initialize Language Text - These text will be read from .dat file.
   fname[1] = "Diggory"
   fname[2] = "Johnny"
   fname[3] = "Lya"
@@ -152,10 +202,9 @@ Sub GetTextFromDAT
     ln = ln + 1
     datLine = File.ReadLine(Program.Directory + "/" + lang + ".dat", ln)
   EndWhile
-  For i = 1 To 10 ' max menu
-    If Array.ContainsIndex(dat, "menu" + i) Then
-      nMenu = i
-    EndIf
-  EndFor
+  nMenu = 0
+  While Array.ContainsIndex(dat, "menu" + (nMenu + 1))
+    nMenu = nMenu + 1
+  EndWhile
   i = Stack.PopValue("local")
 EndSub
