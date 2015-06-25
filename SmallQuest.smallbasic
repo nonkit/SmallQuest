@@ -1,12 +1,15 @@
 'Small Quest
-'Version 0.6a
+'Version 0.6.01a
 'Copyright © 2015 Filipe Cardoso Martins and Nonki Takahashi.  The MIT License.
-'Program ID HDL692-2
+'Program ID HDL692-3
 'Last update 2015-06-25
+
+Not = "False=True;True=False;"
+CRLF = Text.GetCharacter(13) + Text.GetCharacter(10)
 
 'Definições de idioma. / Language settings.
 lang = "en-US"
-GetTextFromDAT()
+Lang_GetTextFromDAT()
 
 'Configurações da janela do jogo. / The game window settings.
 GraphicsWindow.Hide()
@@ -18,13 +21,8 @@ GraphicsWindow.Width = "800"
 Game_Frame()
 Game_Characters()
 Game_Actions()
-txt = "Hi!"
-i = 1
-big = "False"
-Game_ShowBalloon()
-Program.Delay(5000)
-Game_HideBalloon()
 Game_Start()
+Program.End()
 
 Sub Game_Frame
   'Designer da janela do jogo. / Designer of the game window.
@@ -105,14 +103,27 @@ Sub Game_Start
   'Começar o jogo. / Start game.
   mouseMove = "False"
   GraphicsWindow.MouseMove = OnMouseMove
+  mouseDown = "False"
+  GraphicsWindow.MouseDown = OnMouseDown
   selecting = "True"
   While selecting
     If mouseMove Then
       mx = GraphicsWindow.MouseX
       my = GraphicsWindow.MouseY
+      selected = ""
       For i = 1 To 4
         If x1[i] <= mx And mx <= x2[i] And y1 <= my And my <= y2 Then
           If hover[i] Then
+            For j = 1 To nAction
+              ya1 = 364 + (j - 1) * 20
+              ya2 = ya1 + 20
+              If ya1 <= my And my < ya2 Then
+                Shapes.SetOpacity(item[fname[i] + j], 100)
+                selected = fname[i] + j
+              Else
+                Shapes.SetOpacity(item[fname[i] + j], dark)
+              EndIf
+            EndFor
           Else
             hover[i] = "True"
             Shapes.SetOpacity(name[i], 100)
@@ -125,12 +136,39 @@ Sub Game_Start
             Shapes.SetOpacity(name[i], dark)
             Shapes.SetOpacity(face[i], dark)
             Shapes.SetOpacity(action[i], dark)
+            For j = 1 To nAction
+              Shapes.SetOpacity(item[fname[i] + j], dark)
+            EndFor
           EndIf
         EndIf
       EndFor
       mouseMove = "False"
     Else
       Program.Delay(200)
+    EndIf
+    If mouseDown Then
+      Game_HideBalloon()
+      If Text.EndsWith(selected, 1) Then      'Converse / Talk
+        For i = 1 To 4
+          If Text.StartsWith(selected, fname[i]) Then
+            character = i
+            i = 4
+          EndIf
+        EndFor
+        i = character
+        If i = 1 Then
+        txt = "Hi everyone.  Today, I have a crazy suggestion for us."
+        big = "True"
+        Else
+        txt = "What do you" + CRLF + "mean?"
+        big = "False"
+        EndIf
+        Game_ShowBalloon()
+        mouseDown = "False"
+      ElseIf Text.EndsWith(selected, 2) Then  'Dorme / Sleep
+        selecting = "False"
+      EndIf
+      mouseDown = "False"
     EndIf
   EndWhile
 EndSub
@@ -172,10 +210,19 @@ Sub Game_ShowBalloon
 EndSub
 
 Sub Game_HideBalloon
-  Shapes.Remove(root)
-  Shapes.Remove(talk)
+  If root <> "" Then
+    Shapes.Remove(root)
+    root = ""
+  EndIf
+  If talk <> "" Then
+    Shapes.Remove(talk)
+    talk = ""
+  EndIf
   For i = 1 To 6
-    Shapes.Remove(balloon[i])
+    If balloon[i] <> "" Then
+      Shapes.Remove(balloon[i])
+      balloon[i] = ""
+    EndIf
   EndFor
 EndSub
 
@@ -183,7 +230,11 @@ Sub OnMouseMove
   mouseMove = "True"
 EndSub
 
-Sub GetTextFromDAT
+Sub OnMouseDown
+  mouseDown = "True"
+EndSub
+
+Sub Lang_GetTextFromDAT
   'Inicializar Idioma do Texto - Estes textos serão lidos do arquivo .dat.
   'Initialize Language Text - These text will be read from .dat file.
   fname[1] = "Diggory"
