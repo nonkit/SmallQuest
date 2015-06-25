@@ -1,0 +1,21 @@
+﻿1=caption:~ Primeiro dia de aula na faculdade... ~;
+comment=Lya aumento o tom de sua voz e chamou:;
+2=Lya:Diggory, Johnny, Hana.;
+comment=Depois de escutar alguém os chamar olharam ou três para trás imediatamente.;
+comment=Hana sendo a primeira pessoa a perceber quem estava chamando falou:;3=Hana:Amiga que saudade sua.;
+comment=Vindo correndo logo atrás da Hana veio: Diggory e Johnny.;
+comment=Johnny assim que se aproximou de Lya e Hana disse:;
+4=Johnny:Oi meninas senti saudades de vocês.;
+comment=Johnny olho para o Diggory e disse:;
+5=Johnny:Diggory demorou muito, eu estava esperando você.;
+comment=Diggory ainda ofegando por ter corrido para encontrar seu amigos disse:;
+6=Diggory:Oi Lya , Oi Hana,;
+comment=Assim que terminou de cumprimentar seus amigos, apertou a mão de Johnny e disse:;
+7=Diggory:Johnny eu esta procurando você também, meu planos era te ligar mais o um <br>Celular descarregou.
+8=Lya:Amigos não vamos mas perder tempo, não esqueçam que temos aulas para <br>assistir.;
+comment=Assim Lya, Hana, Johnny e Diggory se despediram e foram cada uma para sua aula.;
+9=Lya:Até logo.;
+10=Hana:Até logo.;
+11=Johnny:Até logo.;
+12=Diggory:Até logo.;
+13=end;

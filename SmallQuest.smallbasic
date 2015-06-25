@@ -1,30 +1,136 @@
 'Small Quest
-'Version 0.6.02a
+'Version 0.6.03a
 'Copyright © 2015 Filipe Cardoso Martins and Nonki Takahashi.  The MIT License.
-'Program ID HDL692-4
+'Program ID HDL692-5
 'Last update 2015-06-25
 
+'Inicialize constantes. / Initialize constants.
 Not = "False=True;True=False;"
 CRLF = Text.GetCharacter(13) + Text.GetCharacter(10)
 
 'Definições de idioma. / Language settings.
 scene = ""
 lang = "en-US"
-Lang_GetTextFromDAT()
+Language_GetTextFromDAT()
 
 'Configurações da janela do jogo. / The game window settings.
 GraphicsWindow.Hide()
 GraphicsWindow.Show()
-GraphicsWindow.Title = "Small Quest"
+GraphicsWindow.Title = "Small Quest 0.6.03a"
 GraphicsWindow.Height = "550" 
 GraphicsWindow.Width = "800"
+GraphicsWindow.FontName = "Trebuchet MS"
 
-Game_Frame()
-Game_Characters()
-Game_Actions()
-Game_LoadNextScene()
-Game_Loop()
+GameMenu_Form()
+GraphicsWindow.MouseMove = OnMouseMove
+GraphicsWindow.MouseDown = OnMouseDown
+GameMenu_Select()
 Program.End()
+
+Sub Game_New
+  GraphicsWindow.Clear()
+  Game_Frame()
+  Game_Characters()
+  Game_Actions()
+  Game_LoadNextScene()
+  Game_Loop()
+EndSub
+
+Sub GameMenu_Form
+
+  'Designer da janela do jogo. / Designer of the game window.
+  GraphicsWindow.BackgroundColor= "DodgerBlue"
+  GraphicsWindow.BrushColor= GraphicsWindow.GetColorFromRGB (255, 255, 255)
+  GraphicsWindow.FillRectangle (10, 10, 780, 530)
+  GraphicsWindow.BrushColor= GraphicsWindow.GetColorFromRGB (0, 0, 0)
+  GraphicsWindow.FillRectangle (15, 15, 770, 520)
+  
+  'Foto de Fundo. / Photo Fund.
+  imagem = ImageList.LoadImage(Program.Directory + "/image/FundoTelaCarregamento.png")
+  GraphicsWindow.DrawImage(imagem, 15, 15)
+  GraphicsWindow.BrushColor = "#CC000000"
+  GraphicsWindow.FillRectangle(300, 160, 200, 260)
+  
+  'Título do jogo / Game title.
+  GraphicsWindow.BrushColor = "DarkOrange"
+  GraphicsWindow.FontSize = "40"
+  nameGame = Shapes.AddText("Small Quest")
+  Shapes.Move(nameGame, 280, 50)
+  
+  'Configurações do game menu. / Game settings menu.
+  GameMenu_Add()
+EndSub
+
+Sub GameMenu_Add
+  GraphicsWindow.BrushColor = "DeepSkyBlue"
+  GraphicsWindow.FontSize = "20"
+  menuName = Shapes.AddText(dat["gameMenu"])
+  Shapes.Move(menuName, dat["gameMenuX"], 110)
+  
+  GraphicsWindow.BrushColor = "White"
+  dark = 30
+  y0 = 180
+  dy = 35
+  For i = 1 To nMenu
+    y = y0 + (i - 1) * dy
+    menu[i] = Shapes.AddText(dat["menu" + i])
+    Shapes.Move(menu[i], dat["menuX" + i], y)
+    Shapes.SetOpacity(menu[i], dark)
+  EndFor
+EndSub
+
+Sub GameMenu_Select
+  inGame = "True"
+  While inGame
+    If mouseMove Then
+      my = GraphicsWindow.MouseY
+      selected = ""
+      For i = 1 To nMenu
+        y1 = y0 + (i - 1) * dy
+        y2 = y1 + dy
+        If y1 <= my And my < y2 Then
+          Shapes.SetOpacity(menu[i], 100)
+          selected = i
+        Else
+          Shapes.SetOpacity(menu[i], dark)
+        EndIf
+      EndFor
+      mouseMove = "False"
+    EndIf
+    If mouseDown Then
+      If selected = 1 Then      'CONTINUAR / CONTINUE
+        title = dat["warning"]
+        txt = dat["warning1"]
+        GraphicsWindow.ShowMessage(txt, title)
+      ElseIf selected = 2 Then  'NOVO JOGO / NEW GAME
+        Game_New()
+        GraphicsWindow.Clear()
+        GameMenu_Form()
+      ElseIf selected = 3 Then  'LINGUAGEM / LANGUAGE
+        GameMenu_Remove()
+        Language_Add()
+        mouseDown = "False"
+        Language_Select()
+        Language_Remove()
+        GameMenu_Add()
+      ElseIf selected = 4 Then  'AJUDA / HELP
+        title = dat["warning"]
+        txt = dat["warning1"]
+        GraphicsWindow.ShowMessage(txt, title)
+      ElseIf selected = 5 Then  'SAIR / EXIT
+        inGame = "False"
+      EndIf
+      mouseDown = "False"
+    EndIf
+  EndWhile
+EndSub
+
+Sub GameMenu_Remove
+  Shapes.Remove(menuName)
+  For i = 1 To nMenu
+    Shapes.Remove(menu[i])
+  EndFor
+EndSub
 
 Sub Game_Frame
   'Designer da janela do jogo. / Designer of the game window.
@@ -47,7 +153,6 @@ EndSub
 
 Sub Game_Characters
   'Mostrar caracteres. / Show characters.
-  GraphicsWindow.FontName = "Trebuchet MS"
   GraphicsWindow.FontSize = 30
   dark = 30
   y1 = 15
@@ -105,7 +210,7 @@ Sub Game_LoadNextScene
   If scene = "" Then
     scene = "s1-1"
   EndIf
-  Lang_GetTextFromDAT()
+  Language_GetTextFromDAT()
   line = 1
 EndSub
 
@@ -294,7 +399,7 @@ Sub OnMouseDown
   mouseDown = "True"
 EndSub
 
-Sub Lang_GetTextFromDAT
+Sub Language_GetTextFromDAT
   'Inicializar Idioma do Texto - Estes textos serão lidos do arquivo .dat.
   'Initialize Language Text - These text will be read from .dat file.
   ' param scene - scene number
@@ -320,7 +425,7 @@ Sub Lang_GetTextFromDAT
         max = index[i]
       EndIf
       While Text.IsSubText(dat[index[i]], "<br>")
-        Lang_ChangeBreak()
+        Language_ReplaceBreak()
       EndWhile
     EndFor
     ln = ln + 1
@@ -337,11 +442,85 @@ Sub Lang_GetTextFromDAT
   i = Stack.PopValue("local")
 EndSub
 
-Sub Lang_ChangeBreak
+Sub Language_ReplaceBreak
   ' param dat[index[i]]
   ' return dat[indes[i]]
   p = Text.GetIndexOf(dat[index[i]], "<br>")
   If 0 < p Then
     dat[index[i]] = Text.GetSubText(dat[index[i]], 1, p - 1) + CRLF + Text.GetSubTextToEnd(dat[index[i]], p + 4)
   EndIf
+EndSub
+
+Sub Language_Add
+  GraphicsWindow.BrushColor = "DeepSkyBlue"
+  GraphicsWindow.FontSize = "20"
+  menuName = Shapes.AddText("LANGUAGE SELECTION")
+  Shapes.Move(menuName, 284, 110)
+  
+  'Texto Básico para teste / Basic text for testing.
+  GraphicsWindow.BrushColor = "White"
+  
+  menu[1] = Shapes.AddText("ENGLISH")
+  Shapes.Move(menu[1], 360, 180)
+  flag[1] = Shapes.AddImage(Program.Directory + "/image/EstadosUnidos.png")
+  Shapes.Move(flag[1], 320, 180 + 4)
+  
+  menu[2] = Shapes.AddText("PORTUGÊS")
+  Shapes.Move(menu[2], 360, 215)
+  flag[2] = Shapes.AddImage(Program.Directory + "/image/Brasil.png")
+  Shapes.Move(flag[2], 320, 215 + 4)
+  
+  menu[3] = Shapes.AddText("日本語")
+  Shapes.Move(menu[3], 360, 250)
+  flag[3] = Shapes.AddImage(Program.Directory + "/image/Japam.png")
+  Shapes.Move(flag[3], 320, 250 + 4)
+  
+  nLang = 3
+  For i = 1 To nLang
+    Shapes.SetOpacity(menu[i], dark)
+    Shapes.SetOpacity(flag[i], dark)
+  EndFor
+EndSub
+
+Sub Language_Select
+  inSelection = "True"
+  While inSelection
+    If mouseMove Then
+      my = GraphicsWindow.MouseY
+      selected = ""
+      For i = 1 To nLang
+        y1 = y0 + (i - 1) * dy
+        y2 = y1 + dy
+        If y1 <= my And my < y2 Then
+          Shapes.SetOpacity(menu[i], 100)
+          Shapes.SetOpacity(flag[i], 100)
+          selected = i
+          If selected = 1 Then
+            lang = "en-US"
+          ElseIf selected = 2 Then
+            lang = "pt-BR"
+          ElseIf selected = 3 Then
+            lang = "ja-JP"
+          EndIf
+          Language_GetTextFromDAT()
+        Else
+          Shapes.SetOpacity(menu[i], dark)
+          Shapes.SetOpacity(flag[i], dark)
+        EndIf
+      EndFor
+      mouseMove = "False"
+    EndIf
+    If mouseDown Then
+      inSelection = "False"
+      mouseDown = "False"
+    EndIf
+  EndWhile
+EndSub
+
+Sub Language_Remove
+  Shapes.Remove(menuName)
+  For i = 1 To nLang
+    Shapes.Remove(menu[i])
+    Shapes.Remove(flag[i])
+  EndFor
 EndSub
