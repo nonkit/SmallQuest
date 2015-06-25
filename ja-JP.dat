@@ -4,3 +4,4 @@ menuX1=375;menuX2=348;menuX3=380;menuX4=375;menuX5=380;
 warning=警告;
 warning1=この機能は現在のバージョンでは利用できません。;
 name1=ディゴリー;name2=ジョニー;name3=ライア;name4=ハナ;
+action1=話す;action2=寝る;

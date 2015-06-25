@@ -6,3 +6,4 @@ credit2=Scroll Test #2;
 warning=WARNING;
 warning1=This feature is not available in this version.;
 name1=Diggory;name2=Johnny;name3=Lya;name4=Hana;
+action1=Talk;action2=Sleep;
