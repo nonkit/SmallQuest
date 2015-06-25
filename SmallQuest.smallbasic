@@ -1,13 +1,14 @@
 'Small Quest
-'Version 0.6.01a
+'Version 0.6.02a
 'Copyright © 2015 Filipe Cardoso Martins and Nonki Takahashi.  The MIT License.
-'Program ID HDL692-3
+'Program ID HDL692-4
 'Last update 2015-06-25
 
 Not = "False=True;True=False;"
 CRLF = Text.GetCharacter(13) + Text.GetCharacter(10)
 
 'Definições de idioma. / Language settings.
+scene = ""
 lang = "en-US"
 Lang_GetTextFromDAT()
 
@@ -21,7 +22,8 @@ GraphicsWindow.Width = "800"
 Game_Frame()
 Game_Characters()
 Game_Actions()
-Game_Start()
+Game_LoadNextScene()
+Game_Loop()
 Program.End()
 
 Sub Game_Frame
@@ -99,14 +101,40 @@ Sub Game_Actions
   EndFor
 EndSub
 
-Sub Game_Start
+Sub Game_LoadNextScene
+  If scene = "" Then
+    scene = "s1-1"
+  EndIf
+  Lang_GetTextFromDAT()
+  line = 1
+EndSub
+
+Sub Game_Loop
   'Começar o jogo. / Start game.
   mouseMove = "False"
   GraphicsWindow.MouseMove = OnMouseMove
   mouseDown = "False"
   GraphicsWindow.MouseDown = OnMouseDown
-  selecting = "True"
-  While selecting
+  playing = "True"
+  While playing
+    If Text.StartsWith(dat[line], "caption:") Then
+      caption = Text.GetSubTextToEnd(dat[line], 9)
+      Game_ShowCaption()
+      line = line + 1
+    ElseIf Text.StartsWith(dat[line], "next:") Then
+      scene = Text.GetSubTextToEnd(dat[line], 6)
+      Game_LoadNextScene()
+    ElseIf Text.StartsWith(dat[line], "end") Then
+      title = dat["end"]
+      txt = dat["end1"]
+      GraphicsWindow.ShowMessage(txt, title)
+      playing = "False"
+    ElseIf dat[line] = "" Then
+      title = dat["error"]
+      txt = dat["error1"]
+      GraphicsWindow.ShowMessage(txt, title)
+      playing = "False"
+    EndIf
     If mouseMove Then
       mx = GraphicsWindow.MouseX
       my = GraphicsWindow.MouseY
@@ -149,6 +177,7 @@ Sub Game_Start
     If mouseDown Then
       Game_HideBalloon()
       If Text.EndsWith(selected, 1) Then      'Converse / Talk
+        character = 0
         For i = 1 To 4
           If Text.StartsWith(selected, fname[i]) Then
             character = i
@@ -156,21 +185,52 @@ Sub Game_Start
           EndIf
         EndFor
         i = character
-        If i = 1 Then
-        txt = "Hi everyone.  Today, I have a crazy suggestion for us."
-        big = "True"
-        Else
-        txt = "What do you" + CRLF + "mean?"
-        big = "False"
+        If 1 <= i And i <= 4 Then
+          txt = "..."
+          big = "False"
+          For i = 1 To 4
+            If Text.StartsWith(dat[line], fname[i] + ":") Then
+              start = Text.GetLength(fname[i]) + 2
+              txt = Text.GetSubTextToEnd(dat[line], start)
+              big = "True"
+              line = line + 1
+              character = i
+              i = 4
+            EndIf
+          EndFor
+          i = character
+          Game_ShowBalloon()
         EndIf
-        Game_ShowBalloon()
         mouseDown = "False"
       ElseIf Text.EndsWith(selected, 2) Then  'Dorme / Sleep
-        selecting = "False"
+        playing = "False"
       EndIf
       mouseDown = "False"
     EndIf
   EndWhile
+EndSub
+
+Sub Game_ShowCaption
+  'param caption - caption to be shown
+  width = 740
+  height = 110
+  xc = 30
+  yc = y1 + 10
+  GraphicsWindow.PenWidth = 2
+  GraphicsWindow.PenColor = "Gray"
+  GraphicsWindow.BrushColor = "#333333"
+  rect = Shapes.AddRectangle(width, height)
+  Shapes.Move(rect, xc, yc)
+  GraphicsWindow.BrushColor = "White"
+  GraphicsWindow.FontSize = 20
+  txt = Shapes.AddText(caption)
+  Shapes.Move(txt, xc + 10, yc + 10)
+  mouseDown = "False"
+  While Not[mouseDown]
+    Program.Delay(500)
+  EndWhile
+  Shapes.Remove(txt)
+  Shapes.Remove(rect)
 EndSub
 
 Sub Game_ShowBalloon
@@ -237,25 +297,51 @@ EndSub
 Sub Lang_GetTextFromDAT
   'Inicializar Idioma do Texto - Estes textos serão lidos do arquivo .dat.
   'Initialize Language Text - These text will be read from .dat file.
-  fname[1] = "Diggory"
-  fname[2] = "Johnny"
-  fname[3] = "Lya"
-  fname[4] = "Hana"
+  ' param scene - scene number
+  If scene = "" Then
+    fname[1] = "Diggory"
+    fname[2] = "Johnny"
+    fname[3] = "Lya"
+    fname[4] = "Hana"
+    prefix = Program.Directory + "/" + lang
+  Else
+    prefix = Program.Directory + "/scenario/" + scene + "_" + lang
+  EndIf
   Stack.PushValue("local", i)
   ln = 1
-  datLine = File.ReadLine(Program.Directory + "/" + lang + ".dat", ln)
+  datLine = File.ReadLine(prefix + ".dat", ln)
+  max = 0
   While datLine <> ""
     nItem = Array.GetItemCount(datLine)
     index = Array.GetAllIndices(datLine)
     For i = 1 To nItem
       dat[index[i]] = datLine[index[i]]
+      If max < index[i] Then
+        max = index[i]
+      EndIf
+      While Text.IsSubText(dat[index[i]], "<br>")
+        Lang_ChangeBreak()
+      EndWhile
     EndFor
     ln = ln + 1
-    datLine = File.ReadLine(Program.Directory + "/" + lang + ".dat", ln)
+    datLine = File.ReadLine(prefix + ".dat", ln)
+  EndWhile
+  While dat[max + 1] <> ""
+    max = max + 1
+    dat[max] = ""
   EndWhile
   nMenu = 0
   While Array.ContainsIndex(dat, "menu" + (nMenu + 1))
     nMenu = nMenu + 1
   EndWhile
   i = Stack.PopValue("local")
+EndSub
+
+Sub Lang_ChangeBreak
+  ' param dat[index[i]]
+  ' return dat[indes[i]]
+  p = Text.GetIndexOf(dat[index[i]], "<br>")
+  If 0 < p Then
+    dat[index[i]] = Text.GetSubText(dat[index[i]], 1, p - 1) + CRLF + Text.GetSubTextToEnd(dat[index[i]], p + 4)
+  EndIf
 EndSub

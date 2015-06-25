@@ -1,9 +1,13 @@
-gameMenu=GAME MENU;gameMenuX=337;
+﻿gameMenu=GAME MENU;gameMenuX=337;
 menu1=RESUME;menu2=NEW GAME;menu3=LANGUAGE;menu4=HELP;menu5=EXIT;
 menuX1=357;menuX2=343;menuX3=344;menuX4=374;menuX5=376;
 credit1=Scroll Test #1;
 credit2=Scroll Test #2;
+error=ERROR;
+error1=Illeagal scenario file.;
 warning=WARNING;
 warning1=This feature is not available in this version.;
+end=THE END;
+end1=Small Quest<br>Version 0.6.02a<br>Copyright © 2015 Filipe Cardoso Martins and Nonki Takahashi.;
 name1=Diggory;name2=Johnny;name3=Lya;name4=Hana;
 action1=Talk;action2=Sleep;
