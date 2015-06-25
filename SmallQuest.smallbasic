@@ -1,8 +1,8 @@
 'Small Quest
-'Version 0.6.03a
+'Version 0.6.04a
 'Copyright © 2015 Filipe Cardoso Martins and Nonki Takahashi.  The MIT License.
-'Program ID HDL692-5
-'Last update 2015-06-25
+'Program ID HDL692-6
+'Last update 2015-06-26
 
 'Inicialize constantes. / Initialize constants.
 Not = "False=True;True=False;"
@@ -16,7 +16,7 @@ Language_GetTextFromDAT()
 'Configurações da janela do jogo. / The game window settings.
 GraphicsWindow.Hide()
 GraphicsWindow.Show()
-GraphicsWindow.Title = "Small Quest 0.6.03a"
+GraphicsWindow.Title = "Small Quest 0.6.04a"
 GraphicsWindow.Height = "550" 
 GraphicsWindow.Width = "800"
 GraphicsWindow.FontName = "Trebuchet MS"
@@ -502,6 +502,7 @@ Sub Language_Select
           ElseIf selected = 3 Then
             lang = "ja-JP"
           EndIf
+          scene = ""
           Language_GetTextFromDAT()
         Else
           Shapes.SetOpacity(menu[i], dark)
