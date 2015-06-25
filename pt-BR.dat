@@ -1,3 +1,5 @@
-gameMenu=MENU DO JOGO;gameMenuX=321;
+﻿gameMenu=MENU DO JOGO;gameMenuX=321;
 menu1=CONTINUAR;menu2=NOVO JOGO;menu3=LINGUAGEM;menu4=AJUDA;menu5=SAIR;
 menuX1=337;menuX2=339;menuX3=337;menuX4=366;menuX5=374;
+warning=ATENÇÃO;
+warning1=Esse recurso não está disponível nesta versão.;

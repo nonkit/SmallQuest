@@ -1,3 +1,7 @@
 gameMenu=GAME MENU;gameMenuX=337;
 menu1=RESUME;menu2=NEW GAME;menu3=LANGUAGE;menu4=HELP;menu5=EXIT;
 menuX1=357;menuX2=343;menuX3=344;menuX4=374;menuX5=376;
+credit1=Scroll Test #1;
+credit2=Scroll Test #2;
+warning=WARNING;
+warning1=This feature is not available in this version.;

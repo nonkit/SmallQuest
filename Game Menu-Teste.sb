@@ -1,13 +1,13 @@
-'Game Menu 0.6
+'Game Menu 0.7
 'Small Quest (Teste)
 'Copyright © 2015 Filipe Cardoso Martins and Nonki Takahashi.  The MIT License.
-'Last update 2015-06-05
+'Last update 2015-06-25
 'Program ID CBW762-1
 
 'Configurações da janela do jogo. / The game window settings.
 GraphicsWindow.Hide()
 GraphicsWindow.Show()
-GraphicsWindow.Title = "Game Menu 0.6"
+GraphicsWindow.Title = "Game Menu 0.7"
 GraphicsWindow.Height = "550" 
 GraphicsWindow.Width = "800"
 
@@ -40,6 +40,9 @@ GraphicsWindow.MouseMove = OnMouseMove
 GraphicsWindow.MouseDown = OnMouseDown
 GameMenu_Select()
 Program.End()
+
+Sub Game_New
+EndSub
 
 Sub GameMenu_Add
   GraphicsWindow.BrushColor = "DeepSkyBlue"
@@ -79,7 +82,11 @@ Sub GameMenu_Select
     EndIf
     If mouseDown Then
       If selected = 1 Then      'CONTINUAR / CONTINUE
+        title = dat["warning"]
+        txt = dat["warning1"]
+        GraphicsWindow.ShowMessage(txt, title)
       ElseIf selected = 2 Then  'NOVO JOGO / NEW GAME
+        Game_New()
       ElseIf selected = 3 Then  'LINGUAGEM / LANGUAGE
         GameMenu_Remove()
         Language_Add()
@@ -88,6 +95,9 @@ Sub GameMenu_Select
         Language_Remove()
         GameMenu_Add()
       ElseIf selected = 4 Then  'AJUDA / HELP
+        title = dat["warning"]
+        txt = dat["warning1"]
+        GraphicsWindow.ShowMessage(txt, title)
       ElseIf selected = 5 Then  'SAIR / EXIT
         inGame = "False"
       EndIf
