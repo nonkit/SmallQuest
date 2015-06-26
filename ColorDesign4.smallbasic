@@ -1,0 +1,28 @@
+GraphicsWindow.Title = "Color Design Version 4"
+gw = 598
+gh = 428
+GraphicsWindow.Width = gw
+GraphicsWindow.Height = gh
+GraphicsWindow.BrushColor = "LightGray"
+GraphicsWindow.FillRectangle(10, 10, gw - 20, gh - 20) 
+colors[1] = "DodgerBlue"
+colors[2] = "DarkOrange"
+colors[3] = "Chartreuse"
+colors[4] = "#333333"
+colors[5] = "Black"
+colors[6] = "White"
+nColors = Array.GetItemCount(colors)
+size = 40
+fs = 16
+GraphicsWindow.FontName = "Trebuchet MS"
+GraphicsWindow.FontSize = fs
+x = 100
+y = 60
+dy = Math.Floor((gh - 2 * y - size) / (nColors - 1))
+For i = 1 To nColors
+  GraphicsWindow.BrushColor = colors[i]
+  GraphicsWindow.FillRectangle(x, y, size, size)
+  GraphicsWindow.BrushColor = "Black"
+  GraphicsWindow.DrawText(x + size + 20, y + Math.Floor((size - fs) / 2), colors[i])
+  y = y + dy
+EndFor
