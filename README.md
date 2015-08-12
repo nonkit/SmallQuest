@@ -1,7 +1,7 @@
 Small Quest
 ===========
 
-Version 0.6.04a
+Version 0.8.01a
 
 RELEASE NOTES
 
@@ -30,7 +30,7 @@ Following file is the source code.
 - SmallQuest.smallbasic
 
 Other components:
-- Carregamento.sb (Loading)
+- Carregamento.sb (Loading - COMBINED)
 - Game Menu-Test.sb (Game Menu - COMBINED)
 - LanguageSelection.sb (Language - COMBINED)
 

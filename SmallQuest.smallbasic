@@ -12,12 +12,12 @@ CRLF = Text.GetCharacter(13) + Text.GetCharacter(10)
 scene = ""
 lang = "en-US"
 Language_GetTextFromDAT()
-TextWindow.WriteLine(dat)
 
 'Configurações da janela do jogo. / The game window settings.
 GraphicsWindow.Hide()
 GraphicsWindow.Show()
-GraphicsWindow.Title = "Small Quest 0.8.01a"
+gwTitle = "Small Quest 0.8.01a"
+GraphicsWindow.Title = gwTitle
 GraphicsWindow.Height = "550" 
 GraphicsWindow.Width = "800"
 GraphicsWindow.FontName = "Trebuchet MS"
@@ -40,7 +40,6 @@ Sub Game_New
 EndSub
 
 Sub Loading_Form
-  TextWindow.WriteLine(dat)
   'Configurações da janela do jogo. / The game window settings.
   larguraBarraCarregamento = 700  'loading bar width
   

@@ -10,6 +10,6 @@ error1=Illeagal scenario file.;
 warning=WARNING;
 warning1=This feature is not available in this version.;
 end=THE END;
-end1=Small Quest<br>Version 0.6.02a<br>Copyright © 2015 Filipe Cardoso Martins and Nonki Takahashi.;
+end1=Small Quest<br>Version 0.8.01a<br>Copyright © 2015 Filipe Cardoso Martins and Nonki Takahashi.;
 name1=Diggory;name2=Johnny;name3=Lya;name4=Hana;
 action1=Talk;action2=Sleep;

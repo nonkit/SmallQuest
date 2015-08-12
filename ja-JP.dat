@@ -8,6 +8,6 @@ error1=不正なシナリオファイル。;
 warning=警告;
 warning1=この機能は現在のバージョンでは利用できません。;
 end=おしまい;
-end1=Small Quest<br>Version 0.6.02a<br>Copyright © 2015 Filipe Cardoso Martins and Nonki Takahashi.;
+end1=Small Quest<br>Version 0.8.01a<br>Copyright © 2015 Filipe Cardoso Martins and Nonki Takahashi.;
 name1=ディゴリー;name2=ジョニー;name3=ライア;name4=ハナ;
 action1=話す;action2=寝る;
