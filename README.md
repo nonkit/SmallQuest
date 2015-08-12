@@ -10,8 +10,7 @@ RELEASE NOTES
 - CONTINUE is not supported yet.
 - HELP is not supported yet.
 - has only a short story.
-- Bug fixed - #4 Game Menu language is not changed
-- A line of scenario changed.
+- Loading Screen is supported.
 
 This program was compiled with Small Basic v1.1.  So, if you'd like to run this program in Small Basic v1.0, please [Open] SmallQuest.smallbasic and [Run] it.
 
