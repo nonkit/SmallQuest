@@ -1,8 +1,8 @@
 'Small Quest
-'Version 0.6.04a
+'Version 0.8.01a
 'Copyright © 2015 Filipe Cardoso Martins and Nonki Takahashi.  The MIT License.
-'Program ID HDL692-6
-'Last update 2015-06-26
+'Program ID HDL692-7
+'Last update 2015-08-12
 
 'Inicialize constantes. / Initialize constants.
 Not = "False=True;True=False;"
@@ -12,11 +12,12 @@ CRLF = Text.GetCharacter(13) + Text.GetCharacter(10)
 scene = ""
 lang = "en-US"
 Language_GetTextFromDAT()
+TextWindow.WriteLine(dat)
 
 'Configurações da janela do jogo. / The game window settings.
 GraphicsWindow.Hide()
 GraphicsWindow.Show()
-GraphicsWindow.Title = "Small Quest 0.6.04a"
+GraphicsWindow.Title = "Small Quest 0.8.01a"
 GraphicsWindow.Height = "550" 
 GraphicsWindow.Width = "800"
 GraphicsWindow.FontName = "Trebuchet MS"
@@ -29,6 +30,8 @@ Program.End()
 
 Sub Game_New
   GraphicsWindow.Clear()
+  Loading_Form()
+  GraphicsWindow.Clear()
   Game_Frame()
   Game_Characters()
   Game_Actions()
@@ -36,8 +39,67 @@ Sub Game_New
   Game_Loop()
 EndSub
 
-Sub GameMenu_Form
+Sub Loading_Form
+  TextWindow.WriteLine(dat)
+  'Configurações da janela do jogo. / The game window settings.
+  larguraBarraCarregamento = 700  'loading bar width
+  
+  'Designer da janala do jogo. / Designer of the game window.
+  GraphicsWindow.BackgroundColor= "DodgerBlue"
+  GraphicsWindow.BrushColor= GraphicsWindow.GetColorFromRGB (255, 255, 255)
+  GraphicsWindow.FillRectangle (10, 10, 780, 530)
+  GraphicsWindow.BrushColor= GraphicsWindow.GetColorFromRGB (0, 0, 0)
+  GraphicsWindow.FillRectangle (15, 15, 770, 520)
+  
+  'Foto de Fundo. / Photo Fund.
+  imagem = ImageList.LoadImage(Program.Directory + "/image/FundoTelaCarregamento.png")
+  GraphicsWindow.DrawImage(imagem, 15, 15)
+  
+  'Textos exibidos na janela de carregamento do jogo. / Texts displayed in game loading window.
+  GraphicsWindow.BrushColor = "DarkOrange"
+  GraphicsWindow.FontSize = "40"
+  Logo = Shapes.AddText("Small Quest")
+  Shapes.Move(Logo, 280, 50)
+  
+  GraphicsWindow.BrushColor = "DeepSkyBlue"
+  GraphicsWindow.FontSize = "20"
+  Direitos = Shapes.AddText(dat["independent"])
+  Shapes.Move(Direitos, dat["independentX"], 110)
+  
+  GraphicsWindow.FontSize = "15"
+  ProgressoFundo = Shapes.AddText(dat["loading"])
+  Shapes.Move(ProgressoFundo, 357, 480)
+  
+  'Sistema de carregamento. / Charging system.
+  GraphicsWindow.BrushColor = "White"
+  GraphicsWindow.FillRectangle(50, 450, larguraBarraCarregamento, 30)
+  
+  For porcento = 1 to 100
+    larguraAtual = porcento / 100 * larguraBarraCarregamento
+    tempo1()
+    GraphicsWindow.BrushColor = "Chartreuse"
+    GraphicsWindow.FillRectangle(50, 450, larguraAtual, 30)
+    GraphicsWindow.BrushColor = "Black"
+    GraphicsWindow.FontSize = "15"
+    Shapes.Remove(Progresso)
+    Progresso = Shapes.AddText(porcento + "%")
+    Shapes.Move(Progresso, 387, 455)
+  EndFor
+  
+  Shapes.Remove(ProgressoFundo)
+  GraphicsWindow.BrushColor = "DeepSkyBlue"
+  GraphicsWindow.FontSize = "15"
+  ProgressoFundo = Shapes.AddText("Pronto!")
+  Shapes.Move(ProgressoFundo, 380, 480)
+EndSub
 
+'Tempo de carregamento. / Charging time.
+Sub tempo1
+  Program.Delay(50)
+EndSub
+
+Sub GameMenu_Form
+  
   'Designer da janela do jogo. / Designer of the game window.
   GraphicsWindow.BackgroundColor= "DodgerBlue"
   GraphicsWindow.BrushColor= GraphicsWindow.GetColorFromRGB (255, 255, 255)

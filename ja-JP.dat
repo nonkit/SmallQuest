@@ -1,4 +1,6 @@
 ﻿gameMenu=ゲームメニュー;gameMenuX=342;
+independent=独立系ゲーム;independentX=300;
+loading=ロード中. . .;
 menu1=つづき;menu2=新しいゲーム;menu3=言語;menu4=ヘルプ;menu5=終了;
 menuX1=375;menuX2=348;menuX3=380;menuX4=375;menuX5=380;
 error=エラー;
