@@ -1,7 +1,7 @@
 Small Quest
 ===========
 
-Version 0.8.01a
+Version 0.8.02a
 
 RELEASE NOTES
 
@@ -10,7 +10,7 @@ RELEASE NOTES
 - CONTINUE is not supported yet.
 - HELP is not supported yet.
 - has only a short story.
-- Loading Screen is supported.
+- Bug fixed around Loading Screen.
 
 This program was compiled with Small Basic v1.1.  So, if you'd like to run this program in Small Basic v1.0, please [Open] SmallQuest.smallbasic and [Run] it.
 
