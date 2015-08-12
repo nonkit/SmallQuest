@@ -1,7 +1,7 @@
 'Small Quest
-'Version 0.8.01a
+'Version 0.8.02a
 'Copyright © 2015 Filipe Cardoso Martins and Nonki Takahashi.  The MIT License.
-'Program ID HDL692-7
+'Program ID HDL692-8
 'Last update 2015-08-12
 
 'Inicialize constantes. / Initialize constants.
@@ -16,7 +16,7 @@ Language_GetTextFromDAT()
 'Configurações da janela do jogo. / The game window settings.
 GraphicsWindow.Hide()
 GraphicsWindow.Show()
-gwTitle = "Small Quest 0.8.01a"
+gwTitle = "Small Quest 0.8.02a"
 GraphicsWindow.Title = gwTitle
 GraphicsWindow.Height = "550" 
 GraphicsWindow.Width = "800"
@@ -88,8 +88,9 @@ Sub Loading_Form
   Shapes.Remove(ProgressoFundo)
   GraphicsWindow.BrushColor = "DeepSkyBlue"
   GraphicsWindow.FontSize = "15"
-  ProgressoFundo = Shapes.AddText("Pronto!")
+  ProgressoFundo = Shapes.AddText(dat["ready"])
   Shapes.Move(ProgressoFundo, 380, 480)
+  Program.Delay(1000)
 EndSub
 
 'Tempo de carregamento. / Charging time.
