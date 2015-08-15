@@ -1,0 +1,287 @@
+' Car Graphics 0.7b
+' Copyright © 2014-2015 Nonki Takahashi.  The MIT Lisence.
+'
+' History:
+'  0.7 2015-08-15 Bug fixed. (XXV038-0)
+'  0.6 2015-08-12 Created from Turtle Graphics 0.5b. (XXV038)
+'  0.5 2015-04-13 Supported skip opening and nested REPEAT. (XVK119-3)
+'  0.4 2015-04-09 Added REPEAT command. (XVK119-2)
+'  0.3 2015-04-06 Changed for Challenge of the Month - April 2014. (XVK119-1)
+'  0.2 2014-03-21 Adopted to remote. (XVK119-0) 
+'  0.1 2014-03-20 Created. (XVK119)
+'
+GraphicsWindow.Title = "Car Graphics 0.7b"
+Init()
+Opening()
+Main()
+Sub Main
+  GraphicsWindow.BrushColor = "DimGray"
+  GraphicsWindow.FontSize = 20
+  pgm = Controls.AddMultiLineTextBox(10, 10)
+  Controls.SetSize(pgm, 180, gh - 60)
+  Controls.SetTextBoxText(pgm, src)
+  GraphicsWindow.BrushColor = "Black"
+  Controls.AddButton("RUN", 10, gh - 46)
+  clicked = "False"
+  Controls.ButtonClicked = OnButtonClicked
+  GraphicsWindow.PenColor = "DimGray"
+  GraphicsWindow.PenWidth = 2
+  AT_Init()
+  AT_Show()
+  While "True"
+    If clicked Then
+      src = Controls.GetTextBoxText(pgm)
+      Run()
+      clicked = "False"
+    Else
+      Program.Delay(500)
+    EndIf
+  EndWhile
+EndSub
+Sub OnButtonClicked
+  clicked = "True"
+EndSub
+Sub Run
+  SrcToLines()
+  l = 1 ' level
+  For i = 1 To nLines
+    DoLine()
+  EndFor
+EndSub
+Sub SrcToLines
+  p = 1
+  nLines = 0
+  pNewLine = Text.GetIndexOf(src, CR)
+  While 0 < pNewLine
+    nLines = nLines + 1
+    line[nLines] = Text.ConvertToUpperCase(Text.GetSubText(src, p, pNewLine - 1))
+    p = p + pNewLine
+    If Text.GetSubText(src, p, 1) = LF Then
+      p = p + 1
+    EndIf
+    pNewLine = Text.GetIndexOf(Text.GetSubTextToEnd(src, p), CR)
+  EndWhile
+  If p <= Text.GetLength(src) Then
+    nLines = nLines + 1
+    line[nLines] = Text.ConvertToUpperCase(Text.GetSubTextToEnd(src, p))
+  EndIf
+EndSub
+Sub DoLine
+  ' param line - array of command lines
+  ' param i - index to do for the line
+  If Text.StartsWith(line[i], "FORWARD") Then
+    distance = Text.GetSubTextToEnd(line[i], 8)
+    AT_Move()
+  ElseIf Text.StartsWith(line[i], "PENUP") Then
+    AT_PenUp()
+  ElseIf Text.StartsWith(line[i], "PENDOWN") Then
+    AT_PenDown()
+  ElseIf Text.StartsWith(line[i], "RIGHT") Then
+    angle = Text.GetSubTextToEnd(line[i], 6)
+    AT_Turn()
+  ElseIf Text.StartsWith(line[i], "LEFT") Then
+    angle = -Text.GetSubTextToEnd(line[i], 5)
+    AT_Turn()
+  ElseIf Text.StartsWith(line[i], "REPEAT") Then
+    b = Text.GetIndexOf(line[i], "[")
+    count[l] = Text.GetSubText(line[i], 7, b - 7)
+    iStart[l] = i + 1
+    iEnd[l] = nLines
+    nest = 0
+    For k = iStart[l] To nLines
+      If Text.StartsWith(line[k], "REPEAT") Then
+        nest = nest + 1
+      ElseIf Text.StartsWith(line[k], "]") Then
+        If nest = 0 Then
+          iEnd[l] = k - 1
+          k = nLines
+        Else
+          nest = nest - 1
+        EndIf
+      EndIf
+    EndFor
+    l = l + 1
+    For j = 1 To count[l - 1]
+      Stack.PushValue("local", j)
+      For i = iStart[l - 1] To iEnd[l - 1]
+        DoLine()
+      EndFor
+      j = Stack.PopValue("local")
+    EndFor
+    l = l - 1
+    i = iEnd[l] + 1
+  EndIf
+EndSub
+Sub Init
+  int = 500 ' interval time to synchronize with Silverlight
+  gw = 598
+  gh = 428
+  GraphicsWindow.Width = gw
+  GraphicsWindow.Height = gh
+  CR = Text.GetCharacter(13)
+  LF = Text.GetCharacter(10)
+  src = "FORWARD 100" + CR + "RIGHT 90" + CR + "FORWARD 200"
+  SrcToLines()
+EndSub
+Sub Opening
+  ms = "TITLE=2000;FORWARD=5;RIGHT=20;CLEAR=400;HELP=7000;"
+  GraphicsWindow.KeyDown = OnkeyDown
+  url = Program.Directory + "/image"
+  obj = Shapes.AddImage(url + "/Car240.png")
+  GraphicsWindow.BrushColor = "Green"
+  GraphicsWindow.FontSize = 60
+  GraphicsWindow.FontName = "Tahoma"
+  GraphicsWindow.DrawText(10, 0, "CAR GRAPHICS")
+  x = 100
+  y = 440
+  Shapes.Move(obj, 10, 440)
+  Program.Delay(ms["TITLE"])
+  GraphicsWindow.FontSize = 40
+  GraphicsWindow.BrushColor = "DimGray"
+  GraphicsWindow.DrawText(10, 80, line[1])
+  For y = y To 100 Step -1
+    Shapes.Move(obj, x, y)
+    Program.Delay(ms["FORWARD"])
+  EndFor
+  GraphicsWindow.DrawText(10, 120, line[2])
+  For a = 0 To 90
+    Shapes.Rotate(obj, a)
+    Program.Delay(ms["RIGHT"])
+  EndFor
+  GraphicsWindow.DrawText(10, 160, line[3])
+  For x = x To 700
+    Shapes.Move(obj, x, y)
+    Program.Delay(ms["FORWARD"])
+  EndFor
+  GraphicsWindow.BrushColor = "#99FFFFFF"
+  For i = 1 To 5
+    GraphicsWindow.FillRectangle(0, 0, gw, gh / 2)
+    Program.Delay(ms["CLEAR"])
+  EndFor
+  GraphicsWindow.BrushColor = "DimGray"
+  GraphicsWindow.DrawText(10, 10, "COMMANDS:")
+  GraphicsWindow.DrawText(10, 70, "FORWARD distance")
+  GraphicsWindow.DrawText(10, 110, "LEFT|RIGHT angle")
+  GraphicsWindow.DrawText(10, 150, "PENDOWN|PENUP")
+  GraphicsWindow.DrawText(10, 190, "REPEAT count [commands]")
+  GraphicsWindow.BrushColor = "Green"
+  GraphicsWindow.DrawText(10, 250, "HAVE FUN!")
+  Program.Delay(ms["HELP"])
+  GraphicsWindow.Clear()
+EndSub
+Sub OnKeyDown
+  If GraphicsWindow.LastKey = "Space" Then
+    ms = ""
+  EndIf
+EndSub
+Sub AT_Init
+  ' Another Turtle | Initialize
+  ' param x, y - initial position
+  AT_SIZE = 16
+  AT_OFFSET = AT_SIZE / 2
+  AT_speed = 5
+  AT_obj = Shapes.AddImage(url + "/Car.png")
+  Program.Delay(int)  ' to synchronize with Silverlight
+  AT_x = Turtle.X
+  AT_y = Turtle.Y
+  Shapes.Move(AT_obj, AT_x - AT_OFFSET, AT_y - AT_OFFSET)
+  Shapes.HideShape(AT_obj)
+EndSub
+Sub AT_Show
+  ' Another Turtle | Show 
+  Shapes.ShowShape(AT_obj)
+EndSub
+Sub AT_Move
+  ' Another Turtle | Move
+  ' param distance
+  xStart = AT_x
+  yStart = AT_y
+  AT_x = AT_x + distance * Math.Sin(Math.GetRadians(AT_angle))
+  AT_y = AT_y - distance * Math.Cos(Math.GetRadians(AT_angle))
+  Shapes.Animate(AT_obj, AT_x - AT_OFFSET, AT_y - AT_OFFSET, distance * 50 / AT_speed)
+  If AT_penUp Then
+    Program.Delay(distance * 50 / AT_speed)
+  Else
+    xLast = xStart
+    yLast = yStart
+    For d = distance / 10 To distance Step distance / 10
+      x = xStart + d * Math.Sin(Math.GetRadians(AT_angle))
+      y = yStart - d * Math.Cos(Math.GetRadians(AT_angle))
+      GraphicsWindow.DrawLine(xLast, yLast, x, y)
+      xLast = x
+      yLast = y
+      Program.Delay(distance * 5 / AT_speed)
+    EndFor
+  EndIf
+EndSub
+Sub AT_MoveTo
+  ' Another Turtle | Move to given position
+  ' param x
+  ' param y
+  Stack.PushValue("local", x)
+  Stack.PushValue("local", y)
+  x = x - AT_x
+  y = y - AT_y
+  Math_CartesianToPolar()
+  angle = a + 90 - AT_angle
+  distance = r
+  AT_Turn()
+  AT_Move()
+  y = Stack.PopValue("local")
+  x = Stack.PopValue("local")
+EndSub
+Sub AT_PenUp
+  AT_penUp = "True"
+EndSub
+Sub AT_PenDown
+  AT_penUp = "False"
+EndSub
+Sub AT_Turn
+  ' Another Turtle | Turn given angle
+  ' param angle
+  Stack.PushValue("local", angle)
+  sa = angle / Math.Abs(angle)
+  angle = AT_angle + angle
+  For _a = AT_angle To angle Step sa
+    Shapes.Rotate(AT_obj, _a)
+    Program.Delay(2)
+  EndFor
+  Math_AdjustAngle()
+  AT_angle = angle
+  angle = Stack.PopValue("local")
+EndSub
+Sub AT_TurnRight
+  ' Another Turtle | Turn Right
+  For angle = AT_angle To AT_angle + 90
+    Shapes.Rotate(AT_obj, a)
+    Program.Delay(2)
+  EndFor
+  AT_angle = angle - 1
+EndSub
+Sub Math_AdjustAngle
+  ' Math | adjust angle [0, 360) degree
+  ' param angle
+  ' return angle
+  angle = Math.Remainder(angle, 360)
+  If angle < 0 Then
+    angle = angle + 360
+  EndIf
+EndSub
+Sub Math_CartesianToPolar
+  ' Math | convert cartesian coodinate to polar coordinate
+  ' param x, y - cartesian coordinate
+  ' return r, a - polar coordinate
+  r = Math.SquareRoot(x * x + y * y)
+  If x = 0 And y > 0 Then
+    a = 90 ' [degree]
+  ElseIf x = 0 And y < 0 Then
+    a = -90
+  Else
+    a = Math.ArcTan(y / x) * 180 / Math.Pi
+  EndIf
+  If x < 0 Then
+    a = a + 180
+  ElseIf x >= 0 And y < 0 Then
+    a = a + 360
+  EndIf
+EndSub
