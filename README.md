@@ -32,6 +32,7 @@ Other components:
 - Carregamento.sb (Loading - COMBINED)
 - Game Menu-Test.sb (Game Menu - COMBINED)
 - LanguageSelection.sb (Language - COMBINED)
+- CarGraphics.smallbasic (Drive)
 
 Tools:
 - ColorDesign.smallbasic (Color Design)
