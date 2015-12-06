@@ -1,7 +1,7 @@
 Small Quest
 ===========
 
-Version 0.8.03a
+Version 0.8.04a
 
 RELEASE NOTES
 

@@ -1,0 +1,67 @@
+'Small Quest - Credit
+'Copyright © 2015 Filipe Cardoso Martins and Nonki Takahashi.  The MIT License.
+'Program ID ZWT065-0
+'Last update 2015-12-06
+GraphicsWindow.Title = "Creditos"
+imagem = ImageList.LoadImage(Program.Directory + "/image/FundoTelaCarregamentoCreditos01.png")
+GraphicsWindow.DrawImage(imagem, 15, 15)
+h = 550
+w = 800
+GraphicsWindow.Height = h 
+GraphicsWindow.Width = w
+GraphicsWindow.BackgroundColor = "Black"
+GraphicsWindow.BrushColor = "White"
+lang = "ja-JP"
+GetTextFromDAT()
+GraphicsWindow.Title = dat["credit"]
+txt = Shapes.AddText(dat["credit1"])
+x = 150
+y = 560
+While -200 < y
+  Shapes.Move(txt, x, y)
+  y = y - 1
+  Program.Delay(50)
+EndWhile
+Mensagem()
+Sub GetTextFromDAT
+  Stack.PushValue("local", i)
+  ln = 1
+  datLine = File.ReadLine(Program.Directory + "/" + lang + ".dat", ln)
+  While datLine <> ""
+    nItem = Array.GetItemCount(datLine)
+    index = Array.GetAllIndices(datLine)
+    For i = 1 To nItem
+      dat[index[i]] = datLine[index[i]]
+      If max < index[i] Then
+        max = index[i]
+      EndIf
+      While Text.IsSubText(dat[index[i]], "<br>")
+        Language_ReplaceBreak()
+      EndWhile
+    EndFor
+    ln = ln + 1
+    datLine = File.ReadLine(Program.Directory + "/" + lang + ".dat", ln)
+  EndWhile
+  For i = 1 To 10 ' max menu
+    If Array.ContainsIndex(dat, "menu" + i) Then
+      nMenu = i
+    EndIf
+  EndFor
+  i = Stack.PopValue("local")
+EndSub
+Sub Language_ReplaceBreak
+  ' param dat[index[i]]
+  ' return dat[indes[i]]
+  p = Text.GetIndexOf(dat[index[i]], "<br>")
+  CRLF = Text.GetCharacter(13) + Text.GetCharacter(10)
+  If 0 < p Then
+    dat[index[i]] = Text.GetSubText(dat[index[i]], 1, p - 1) + CRLF + Text.GetSubTextToEnd(dat[index[i]], p + 4)
+  EndIf
+EndSub
+Sub Mensagem
+  title = dat["end"]
+  txt = dat["end1"]
+  GraphicsWindow.ShowMessage(txt, title)
+  GraphicsWindow.Hide()
+EndSub
+  
