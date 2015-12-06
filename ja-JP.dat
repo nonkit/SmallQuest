@@ -8,6 +8,8 @@ error=エラー;
 error1=不正なシナリオファイル。;
 warning=警告;
 warning1=この機能は現在のバージョンでは利用できません。;
+credit=クレジット;
+credit1=SMALL QUEST<br><br>ゲームメニュー<br>開発: Felipe と のんき<br><br>カーグラフィクス<br>ゲームアダプテーション: タートルグラフィックス, のんき<br>デザイナー: カーデザイン Filipe Cardoso Martins<br><br>テクニカルディレクター<br>たかはしのんき<br><br>SPECIAL THANKS<br>Ed Price;
 end=おしまい;
 end1=Small Quest<br>Version 0.8.02a<br>Copyright © 2015 Filipe Cardoso Martins and Nonki Takahashi.;
 name1=ディゴリー;name2=ジョニー;name3=ライア;name4=ハナ;

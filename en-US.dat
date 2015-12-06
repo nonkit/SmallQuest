@@ -10,6 +10,8 @@ error=ERROR;
 error1=Illeagal scenario file.;
 warning=WARNING;
 warning1=This feature is not available in this version.;
+credit=CREDIT;
+credit1=SMALL QUEST<br><br>GAME MENU<br>Written and developed by: Felipe and Nonki<br><br>CAR GRAPHICS<br>Game adaptation: TURTLE GRAPHICS, written by Nonki<br>Designer: Car designed by Filipe Cardoso Martins<br><br>TECHNICAL DIRECTOR<br>Nonki Takahashi<br><br>SPECIAL THANKS<br>Ed Price;
 end=THE END;
 end1=Small Quest<br>Version 0.8.02a<br>Copyright © 2015 Filipe Cardoso Martins and Nonki Takahashi.;
 name1=Diggory;name2=Johnny;name3=Lya;name4=Hana;

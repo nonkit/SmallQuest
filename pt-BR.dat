@@ -8,6 +8,8 @@ error=erro;
 error1=arquivo de cenário Illeagal.;
 warning=ATENÇÃO;
 warning1=Esse recurso não está disponível nesta versão.;
+credit=CREDITOS
+credit1=SMALL QUEST<br><br>GAME MENU<br>Escrito e desenvolvido por: Filipe e Nonki<br><br>CAR GRAPHICS<br>Adapitacao do jogo: TURTLE GRAPHICS, escrito por Nonki<br>Designer: Carro desenhado por, Filipe Cardoso Martins<br><br>DIRETOR TÉCNICO<br>Nonki Takahashi<br><br>AGRADECIMENTOS ESPECIAIS<br>Ed Price;
 end=FIM;
 end1=Small Quest<br>Version 0.8.02a<br>Copyright © 2015 Filipe Cardoso Martins and Nonki Takahashi.;
 name1=Diggory;name2=Johnny;name3=Lya;name4=Hana;

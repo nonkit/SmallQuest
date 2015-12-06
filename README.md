@@ -1,7 +1,7 @@
 Small Quest
 ===========
 
-Version 0.8.02a
+Version 0.8.03a
 
 RELEASE NOTES
 
@@ -33,6 +33,7 @@ Other components:
 - Game Menu-Test.sb (Game Menu - COMBINED)
 - LanguageSelection.sb (Language - COMBINED)
 - CarGraphics.smallbasic (Drive)
+- Creditos.sb (Credit)
 
 Tools:
 - ColorDesign.smallbasic (Color Design)
