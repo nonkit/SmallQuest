@@ -1,7 +1,8 @@
-' Car Graphics 0.8b
-' Copyright © 2014-2015 Filipe Cardoso Martins and Nonki Takahashi.  The MIT Lisence.
+' Car Graphics 0.9b
+' Copyright © 2014-2016 Filipe Cardoso Martins and Nonki Takahashi.  The MIT Lisence.
 '
 ' History:
+'  0.9 2016-06-17 Added roads. (XXV038-2)
 '  0.8 2015-12-07 Design changed by Filipe.  Command shortened. (XXV038-1)
 '  0.7 2015-08-15 Bug fixed. (XXV038-0)
 '  0.6 2015-08-12 Created from Turtle Graphics 0.5b. (XXV038)
@@ -11,7 +12,7 @@
 '  0.2 2014-03-21 Adopted to remote. (XVK119-0) 
 '  0.1 2014-03-20 Created. (XVK119)
 '
-GraphicsWindow.Title = "Car Graphics 0.8b"
+GraphicsWindow.Title = "Car Graphics 0.9b"
 Init()
 Opening()
 Main()
@@ -28,9 +29,10 @@ Sub Main
   Controls.AddButton("RUN", 20, gh - 35)
   clicked = "False"
   Controls.ButtonClicked = OnButtonClicked
+  AT_Init()
+  DrawRoads()
   GraphicsWindow.PenColor = "DeepSkyBlue"
   GraphicsWindow.PenWidth = 2
-  AT_Init()
   AT_Show()
   While "True"
     If clicked Then
@@ -63,6 +65,17 @@ EndSub
 Sub criarEspaço
   GraphicsWindow.Show()
   CONFIG2()
+EndSub
+Sub DrawRoads
+  ' param AT_x, AT_y - position of the car
+  GraphicsWindow.PenColor = "#333333"
+  GraphicsWindow.PenWidth = 20
+  For x = AT_x To AT_x + 300 Step 100
+    GraphicsWindow.DrawLine(x, AT_y - 110, x, AT_y + 210)
+  EndFor
+  For y = AT_y - 100 To AT_x + 200 Step 100
+    GraphicsWindow.DrawLine(AT_x - 10, y, AT_x + 310, y)
+  EndFor
 EndSub
 Sub OnButtonClicked
   clicked = "True"
@@ -159,31 +172,38 @@ Sub Opening
   GraphicsWindow.BrushColor = "DarkOrange"
   GraphicsWindow.FontSize = 60
   GraphicsWindow.FontName = "Tahoma"
-  GraphicsWindow.DrawText(10, 0, "CAR GRAPHICS")
+  txt[0] = Shapes.AddText("CAR GRAPHICS")
+  Shapes.Move(txt[0], 10, 0)
   x = 100
   y = 440
   Shapes.Move(obj, 10, 440)
   Program.Delay(ms["TITLE"])
+  GraphicsWindow.BrushColor = "#333333"
+  GraphicsWindow.FillRectangle(x - 20, 100 - 20, x + 160, gh)
+  GraphicsWindow.FillRectangle(x + 160, 100 - 20, gw, 100 + 160)
   GraphicsWindow.FontSize = 40
   GraphicsWindow.BrushColor = "Chartreuse"
-  GraphicsWindow.DrawText(10, 80, line[1])
+  txt[1] = Shapes.AddText(line[1])
+  Shapes.Move(txt[1], 10, 80)
   For y = y To 100 Step -1
     Shapes.Move(obj, x, y)
     Program.Delay(ms["FORWARD"])
   EndFor
-  GraphicsWindow.DrawText(10, 120, line[2])
+  txt[2] = Shapes.AddText(line[2])
+  Shapes.Move(txt[2], 10, 120)
   For a = 0 To 90
     Shapes.Rotate(obj, a)
     Program.Delay(ms["RIGHT"])
   EndFor
-  GraphicsWindow.DrawText(10, 160, line[3])
+  txt[3] = Shapes.AddText(line[3])
+  Shapes.Move(txt[3], 10, 160)
   For x = x To 700
     Shapes.Move(obj, x, y)
     Program.Delay(ms["FORWARD"])
   EndFor
   GraphicsWindow.BrushColor = "Black"
-  For i = 1 To 5
-    GraphicsWindow.FillRectangle(0, 0, gw, gh / 2)
+  For i = 0 To 3
+    Shapes.Remove(txt[i])
     Program.Delay(ms["CLEAR"])
   EndFor
   GraphicsWindow.BrushColor = "Chartreuse"
