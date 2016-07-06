@@ -1,7 +1,8 @@
-' Car Graphics 0.9b
+' Car Graphics 1.0b
 ' Copyright © 2014-2016 Filipe Cardoso Martins and Nonki Takahashi.  The MIT Lisence.
 '
 ' History:
+'  1.0 2016-07-06 Change roads as a quiz. (XXV038-3)
 '  0.9 2016-06-17 Added roads. (XXV038-2)
 '  0.8 2015-12-07 Design changed by Filipe.  Command shortened. (XXV038-1)
 '  0.7 2015-08-15 Bug fixed. (XXV038-0)
@@ -12,9 +13,10 @@
 '  0.2 2014-03-21 Adopted to remote. (XVK119-0) 
 '  0.1 2014-03-20 Created. (XVK119)
 '
-GraphicsWindow.Title = "Car Graphics 0.9b"
+GraphicsWindow.Title = "Car Graphics 1.0b"
 Init()
 Opening()
+onRoad = "False"
 Main()
 hE = 100
 wE = 100
@@ -23,17 +25,29 @@ Sub Main
   GraphicsWindow.BrushColor = "Chartreuse"
   GraphicsWindow.FontSize = 20
   pgm = Controls.AddMultiLineTextBox(20, 20)
-  Controls.SetSize(pgm, 180, gh - 60)
+  Controls.SetSize(pgm, 180, gh - 80)
+  src = sample
   Controls.SetTextBoxText(pgm, src)
   GraphicsWindow.BrushColor = "DarkOrange"
-  Controls.AddButton("RUN", 20, gh - 35)
+  Controls.AddButton("RUN", 20, gh - 55)
   clicked = "False"
   Controls.ButtonClicked = OnButtonClicked
   AT_Init()
+  GraphicsWindow.PenWidth = 0
+  GraphicsWindow.BrushColor = "Black"
+  mask = Shapes.AddRectangle(gw, gh)
+  Shapes.SetOpacity(mask, 0)
+  Shapes.HideShape(mask)
+  AT_Show()
+  x = 250
+  y = 275
+  AT_MoveTo()
+  angle = 90 
+  AT_SetAngle()
   DrawRoads()
+  onRoad = "True"
   GraphicsWindow.PenColor = "DeepSkyBlue"
   GraphicsWindow.PenWidth = 2
-  AT_Show()
   While "True"
     If clicked Then
       src = Controls.GetTextBoxText(pgm)
@@ -45,8 +59,10 @@ Sub Main
   EndWhile
 EndSub
 Sub Config
-  GraphicsWindow.Height = "550"
-  GraphicsWindow.Width = "800"
+  gw = 800
+  gh = 550
+  GraphicsWindow.Height = gh
+  GraphicsWindow.Width = gw
   
   GraphicsWindow.BackgroundColor= "DodgerBlue"
   GraphicsWindow.BrushColor= GraphicsWindow.GetColorFromRGB (255, 255, 255)
@@ -66,16 +82,65 @@ Sub criarEspaço
   GraphicsWindow.Show()
   CONFIG2()
 EndSub
+Sub CheckCrash
+  crash = "False"
+  If onRoad Then
+    color = GraphicsWindow.GetPixel(Math.Round(x), Math.Round(y))
+    If color <> "#333333" And color <> "#00BFFF" Then
+      crash = "True"
+    EndIf
+  EndIf
+EndSub
+Sub DrawBlow
+  ' param x, y - position of the car
+  GraphicsWindow.BrushColor = "DarkOrange"
+  n = 7
+  For i = 1 To n
+    θ = Math.GetRadians((i - 1) * (360 / n))
+    x1 = x + 40 * Math.Cos(θ)
+    y1 = y - 40 * Math.Sin(θ)
+    x2 = x + 10 * Math.Cos(θ - Math.Pi / 2)
+    y2 = y - 10 * Math.Sin(θ - Math.Pi / 2)
+    x3 = x + 10 * Math.Cos(θ + Math.Pi / 2)
+    y3 = y - 10 * Math.Sin(θ + Math.Pi / 2)
+    GraphicsWindow.FillTriangle(x1, y1, x2, y2, x3, y3)
+  EndFor
+EndSub
+Sub DrawCross
+  ' param x,  y - position for the cross
+  GraphicsWindow.PenWidth = 4
+  GraphicsWindow.PenColor = "DarkOrange"
+  GraphicsWindow.DrawLine(x - 14, y - 14, x + 14, y + 14)
+  GraphicsWindow.DrawLine(x - 14, y + 14, x + 14, y - 14)
+EndSub
 Sub DrawRoads
   ' param AT_x, AT_y - position of the car
   GraphicsWindow.PenColor = "#333333"
   GraphicsWindow.PenWidth = 20
-  For x = AT_x To AT_x + 300 Step 100
-    GraphicsWindow.DrawLine(x, AT_y - 110, x, AT_y + 210)
+  GraphicsWindow.DrawLine(AT_x - 10, AT_y, AT_x + 200, AT_y)
+  GraphicsWindow.DrawLine(AT_x + 300, AT_y, AT_x + 510, AT_y)
+  For x = AT_x + 100 To AT_x + 400 Step 100
+    GraphicsWindow.DrawLine(x, AT_y - 210, x, AT_y + 210)
   EndFor
-  For y = AT_y - 100 To AT_x + 200 Step 100
-    GraphicsWindow.DrawLine(AT_x - 10, y, AT_x + 310, y)
+  For y = AT_y - 200 To AT_y + 200 Step 100
+    If y <> AT_y Then
+      GraphicsWindow.DrawLine(AT_x + 100, y, AT_x + 410, y)
+    EndIf
   EndFor
+  x = AT_x + 100
+  y = AT_y - 150
+  DrawCross()
+  x = AT_x + 150
+  y = AT_y + 100
+  DrawCross()
+  x = AT_x + 350
+  y = AT_y - 100
+  DrawCross()
+  x = AT_x + 350
+  y = AT_y + 200
+  DrawCross()
+  xGoal = Math.Round(AT_x) + 500
+  yGoal = Math.Round(AT_y)
 EndSub
 Sub OnButtonClicked
   clicked = "True"
@@ -85,7 +150,31 @@ Sub Run
   l = 1 ' level
   For i = 1 To nLines
     DoLine()
+    If crash Then
+      Shapes.ShowShape(mask)
+      For op = 0 To 80 Step 4
+        Shapes.SetOpacity(mask, op)
+        Program.Delay(100)
+      EndFor
+      GraphicsWindow.BrushColor = "White"
+      GraphicsWindow.FontSize = 80
+      txtMsg = Shapes.AddText("GAME OVER")
+      Shapes.Move(txtMsg, 190, 220)
+      i = nLines  ' exit For
+    EndIf
   EndFor
+  If Math.Round(AT_x) = xGoal And Math.Round(AT_y) = yGoal Then
+    Sound.PlayBellRing()
+    Shapes.ShowShape(mask)
+    Shapes.SetOpacity(mask, 80)
+    GraphicsWindow.BrushColor = "White"
+    GraphicsWindow.FontSize = 80
+    txtMsg = Shapes.AddText("GOAL")
+    Shapes.Move(txtMsg, 310, 220)
+    ShowTickerTape()
+    Shapes.Remove(txtMsg)
+    Shapes.HideShape(mask)
+  EndIf
 EndSub
 Sub SrcToLines
   p = 1
@@ -155,6 +244,7 @@ Sub Init
   int = 500 ' interval time to synchronize with Silverlight
   gw = 598
   gh = 435
+  colors = "1=DarkOrange;2=Chartreuse;3=DeepSkyBlue;"
   GraphicsWindow.BackgroundColor = "Black"
   GraphicsWindow.Width = gw
   GraphicsWindow.Height = gh
@@ -162,6 +252,9 @@ Sub Init
   LF = Text.GetCharacter(10)
   src = "FD 100" + CR + "RT 90" + CR + "FD 200"
   SrcToLines()
+  sample = "FD 200" + CR + "LT 90" + CR + "FD 100" + CR + "RT 90" + CR
+  sample = sample + "FD 100" + CR + "RT 90" + CR + "FD 100" + CR + "LT 90" + CR
+  sample = sample + "FD 200"
 EndSub
 Sub Opening
   ms = "TITLE=2000;FORWARD=5;RIGHT=20;CLEAR=400;HELP=7000;"
@@ -171,7 +264,7 @@ Sub Opening
   obj = Shapes.AddImage(url + "/Car240.png")
   GraphicsWindow.BrushColor = "DarkOrange"
   GraphicsWindow.FontSize = 60
-  GraphicsWindow.FontName = "Tahoma"
+  GraphicsWindow.FontName = "Trebuchet MS"
   txt[0] = Shapes.AddText("CAR GRAPHICS")
   Shapes.Move(txt[0], 10, 0)
   x = 100
@@ -217,6 +310,62 @@ Sub Opening
   Program.Delay(ms["HELP"])
   GraphicsWindow.Clear()
 EndSub
+Sub ShowTickerTape
+  GraphicsWindow.PenWidth = 0
+  nMin = 1
+  nMax = 0
+  AddTickerTape()
+  Timer.Interval = 1000 / 24
+  Timer.Tick = OnTick
+  msStart = Clock.ElapsedMilliseconds
+  While 0 < Array.GetItemCount(tt)
+    If tick Then
+      If (Math.GetRandomNumber(10) = 1) And (Clock.ElapsedMilliseconds < msStart + 15000) Then
+        AddTickerTape()
+      EndIf
+      For i = nMin To nMax
+        x[i] = x[i] + Math.GetRandomNumber(4) - 2
+        y[i] = y[i] + Math.GetRandomNumber(4)
+        If gh + 60 < y[i] Then
+          nMin = i + 1
+          While tt[i] <> ""
+            Shapes.Remove(tt[i])
+            tt[i] = ""
+            i = i - 1
+          EndWhile
+        EndIf
+        Shapes.Move(tt[i], x[i], y[i])
+        a[i] = a[i] + 45
+        If 360 <= a[i] Then
+          a[i] = a[i] - 360
+        EndIf
+        Shapes.Zoom(tt[i], 1, Math.Sin(Math.GetRadians(a[i])))
+      EndFor
+      tick = "False"
+    Else
+      Program.Delay(1000 / 24)
+    EndIf
+  EndWhile
+  RemoveTickerTape()
+EndSub
+Sub RemoveTickerTape
+  For i = nMin To nMax
+    Shapes.Remove(tt[i])
+  EndFor
+EndSub
+Sub AddTickerTape
+  nMax = nMax + 1
+  GraphicsWindow.BrushColor = colors[Math.GetRandomNumber(3)]
+  tt[nMax] = Shapes.AddRectangle(20, 12)
+  x[nMax] = Math.GetRandomNumber(gw - 20) + 10
+  y[nMax] = -10
+  a[nMax] = Math.GetRandomNumber(360) - 1
+  Shapes.Rotate(tt[nMax], a[nMax])
+  Shapes.Move(tt[nMax], x[nMax], y[nMax])
+EndSub
+Sub OnTick
+  tick = "True"
+EndSub
 Sub OnKeyDown
   If GraphicsWindow.LastKey = "Space" Then
     ms = ""
@@ -234,6 +383,11 @@ Sub AT_Init
   AT_y = Turtle.Y
   Shapes.Move(AT_obj, AT_x - AT_OFFSET, AT_y - AT_OFFSET)
   Shapes.HideShape(AT_obj)
+EndSub
+Sub AT_SetAngle
+  ' Another Turtle | Set Angle
+  Shapes.Rotate(AT_obj, angle)
+  AT_angle = angle
 EndSub
 Sub AT_Show
   ' Another Turtle | Show 
@@ -255,10 +409,30 @@ Sub AT_Move
     For d = distance / 10 To distance Step distance / 10
       x = xStart + d * Math.Sin(Math.GetRadians(AT_angle))
       y = yStart - d * Math.Cos(Math.GetRadians(AT_angle))
+      Stack.PushValue("local", x)
+      Stack.PushValue("local", y)
+      xEnd = x
+      yEnd = y
+      For Δ = 0 To 1 Step 0.02
+        x = xLast + Δ * (xEnd - xLast)
+        y = yLast + Δ * (yEnd - yLast)
+        CheckCrash()
+        If crash Then
+          Δ = 1 ' exit For
+        EndIf
+      EndFor
+      y = Stack.PopValue("local")
+      x = Stack.PopValue("local")
       GraphicsWindow.DrawLine(xLast, yLast, x, y)
-      xLast = x
-      yLast = y
-      Program.Delay(distance * 5 / AT_speed)
+      If crash Then
+        DrawBlow()
+        Shapes.Move(AT_obj, x - AT_OFFSET, y - AT_OFFSET)
+        d = distance  ' exit For
+      Else
+        xLast = x
+        yLast = y
+        Program.Delay(distance * 5 / AT_speed)
+      EndIf
     EndFor
   EndIf
 EndSub
