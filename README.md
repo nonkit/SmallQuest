@@ -2,7 +2,7 @@
 
 # Small Quest
 
-Version 0.8.04a
+Version 0.8.05a
 
 RELEASE NOTES
 
@@ -12,7 +12,7 @@ RELEASE NOTES
 - has only a short story.
 - Bug fixed around Loading Screen.
 
-This program was compiled with Small Basic v1.1.  So, if you'd like to run this program in Small Basic v1.0, please [Open] SmallQuest.smallbasic and [Run] it.
+This program was compiled with Small Basic v1.2.  So, if you'd like to run this program in Small Basic v1.0, please [Open] SmallQuest.smallbasic and [Run] it.
 
 Following two files are runtime executables.
 - SmallBasicLibrary.dll
@@ -26,14 +26,14 @@ These files and folders are needed to run this program.
 - pt-BR.dat
 
 Following file is the source code.
-- SmallQuest.smallbasic
+- SmallQuest.sb
 
 Other components:
 - Carregamento.sb (Loading - COMBINED)
 - Game Menu-Test.sb (Game Menu - COMBINED)
 - LanguageSelection.sb (Language - COMBINED)
-- CarGraphics.smallbasic (Drive)
+- CarGraphics.sb (Drive)
 - Creditos.sb (Credit)
 
 Tools:
-- ColorDesign.smallbasic (Color Design)
+- ColorDesign.sb (Color Design)
