@@ -1,5 +1,5 @@
-Small Quest
-===========
+![](image/SQIcon.png)
+#Small Quest
 
 Version 0.8.04a
 
