@@ -1,10 +1,10 @@
 ![](image/SQIcon.png)
+
 #Small Quest
 
 Version 0.8.04a
 
 RELEASE NOTES
-
 
 - This version is for demo.
 - CONTINUE is not supported yet.
