@@ -2,9 +2,11 @@
 
 # Small Quest
 
+[![Made with Small Basic](https://img.shields.io/badge/Made%20with-Small%20Basic-orange)](http://smallbasic.com)
+
 Version 0.8.05a
 
-RELEASE NOTES
+## RELEASE NOTES
 
 - This version is for demo.
 - CONTINUE is not supported yet.
@@ -37,3 +39,7 @@ Other components:
 
 Tools:
 - ColorDesign.sb (Color Design)
+
+## Credit
+
+Made with Small Basic badge is designed by [rockycodeshimhe-1332](https://docs.microsoft.com/en-us/answers/questions/210063/guys-i-made-a-nice-small-basic-github-badge.html)
